@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
+  include SessionHelper
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update]
 
   # GET /users
   # GET /users.json
@@ -25,6 +28,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.is_administrator = false
 
     respond_to do |format|
       if @user.save
@@ -61,14 +65,36 @@ class UsersController < ApplicationController
     end
   end
 
+  def login
+  end
+  def login_
+    user = User.find_by(username: params[:session][:username])
+    if user.nil?
+      flash[:fail] = "Could not find a user with username " + params[:session][:username]
+      redirect_to :root
+    else
+      user.authenticate(params[:session][:password])
+      log_in user
+      redirect_to user
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
-
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+    def correct_user
+      redirect_to(root_url) unless @user == current_user?(@user)
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :password_digest, :is_administrator, :email)
+      params.require(:user).permit(:username, :password, :password_confirmation, :email)
     end
 end
