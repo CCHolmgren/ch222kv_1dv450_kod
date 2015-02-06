@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  get 'api_applications/create'
+
+  get 'api_applications/index'
+
+  get 'api_applications/show'
+
+  get 'api_applications/new'
+
+  get 'api_applications/edit'
+
+  get 'api_applications/update'
+
+  get 'api_applications/destroy'
+
   root "users#index"
   resources :users
 
