@@ -1,17 +1,19 @@
 Rails.application.routes.draw do
-  get 'api_applications/create'
+  get 'api_applications', :to => "api_applications#index", :as => "api_applications"
 
-  get 'api_applications/index'
+  post 'api_applications', :to => "api_applications#create"
 
-  get 'api_applications/show'
+  get 'api_applications/:id', :as => "api_application", :to => "api_applications#show"
 
   get 'api_applications/new'
 
-  get 'api_applications/edit'
+  get 'api_applications/:id/edit', :to => "api_applications#edit"
 
-  get 'api_applications/update'
+  patch 'api_applications/:id', :to => "api_applications#update"
 
-  get 'api_applications/destroy'
+  put 'api_applications/:id', :to => "api_applications#update"
+
+  delete 'api_applications/:id', :to => "api_applications#destroy"
 
   root "users#index"
   resources :users

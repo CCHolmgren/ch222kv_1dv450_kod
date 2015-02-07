@@ -1,5 +1,8 @@
 <h1>ApiApplication#index</h1>
 <p>Find me in app/views/api_application/index.html.erb</p>
 <% @api_applications.each do |application| %>
+    <%= debug application %>
     <%= application %>
+    <%= application.name %>
+    <%= application.description %>
 <% end %>
