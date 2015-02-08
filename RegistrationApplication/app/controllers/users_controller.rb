@@ -68,7 +68,7 @@ class UsersController < ApplicationController
   def login
     session[:return_to] ||= request.referer
   end
-  def login_
+  def login_post
     user = User.find_by(username: params[:session][:username])
     if user.nil?
       flash[:fail] = "Could not find a user with username " + params[:session][:username]
@@ -81,23 +81,27 @@ class UsersController < ApplicationController
       redirect_to user
     end
   end
+  def logout_post
+    log_out
+    respond_to do |format|
+      format.html { redirect_to :root, notice: "Logged out" }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
-      flash[:user] = @user.id
-      flash[:user_id] = session[:user_id]
     end
     def logged_in_user
       unless logged_in?
-        flash[:danger] = "Please log in."
+        flash[:danger] = "Please log in. Before doing that."
         redirect_to login_url
       end
     end
     def correct_user
       if @user.is_administrator
-      elsif !current_user?(@user)
+      elsif not current_user?(@user)
         redirect_to :root
       end
     end

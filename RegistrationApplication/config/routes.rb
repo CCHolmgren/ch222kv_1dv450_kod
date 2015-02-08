@@ -19,7 +19,9 @@ Rails.application.routes.draw do
   resources :users
 
   get "/login", to: "users#login", as: "login"
-  post "/login", to: "users#login_"
+  post "/login", to: "users#login_post"
+  post "/logout", :to => "users#logout_post", :as => "logout"
+  get "/logout", :to => "users#logout_post"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
