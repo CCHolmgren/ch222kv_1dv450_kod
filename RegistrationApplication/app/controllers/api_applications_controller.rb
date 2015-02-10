@@ -1,12 +1,11 @@
 class ApiApplicationsController < ApplicationController
   require "securerandom"
-  include SessionHelper
   before_action :set_application, only: [:edit, :show, :update, :destroy]
   before_action :check_authorization, only: [:edit, :show, :update, :destroy]
   def create
     @api_application = ApiApplication.new(application_params)
-    @api_application.client_key = SecureRandom.hex(n=64)
-    @api_application.client_secret = SecureRandom.hex(n=64)
+    @api_application.client_key = SecureRandom.hex(n=32)
+    @api_application.client_secret = SecureRandom.hex(n=32)
     @api_application.user = current_user
 
     respond_to do |format|
@@ -21,7 +20,10 @@ class ApiApplicationsController < ApplicationController
   end
 
   def index
-    @api_applications = current_user.api_applications.all
+    @api_application = current_user.api_application
+    if current_user.is_administrator
+      @api_applications = ApiApplication.all
+    end
   end
 
   def show
@@ -59,8 +61,8 @@ class ApiApplicationsController < ApplicationController
       @api_application = ApiApplication.find(params[:id])
     end
     def check_authorization
-      if @api_application.user != current_user
-        redirect_to :root
+      if @api_application.user != current_user and not current_user.is_adminstrator
+        redirect_to :back
       end
     end
 end

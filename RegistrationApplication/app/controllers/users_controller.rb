@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  include SessionHelper
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
@@ -7,6 +6,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
+    flash[:current_user] = current_user
     @users = User.all
   end
 
@@ -73,12 +73,16 @@ class UsersController < ApplicationController
     if user.nil?
       flash[:fail] = "Could not find a user with username " + params[:session][:username]
       redirect_to login_url
-    elsif session[:return_to]
-      redirect_to session.delete(:return_to)
     else
       user.authenticate(params[:session][:password])
       log_in user
-      redirect_to user
+      flash[:signed_in] = "Logged in as " + user.username
+      if session[:return_to]
+        flash[:notice] = "Redirecting to where you came from"
+        redirect_to session.delete(:return_to)
+      else
+        redirect_to users_url
+      end
     end
   end
   def logout_post
@@ -100,8 +104,8 @@ class UsersController < ApplicationController
       end
     end
     def correct_user
-      if @user.is_administrator
-      elsif not current_user?(@user)
+      if not current_user.is_administrator or  not current_user?(@user)
+        flash[:notice] = "You can't edit that user"
         redirect_to :root
       end
     end

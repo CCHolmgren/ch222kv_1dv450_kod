@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
+  root "users#index"
+
   get 'api_applications', :to => "api_applications#index", :as => "api_applications"
 
   post 'api_applications', :to => "api_applications#create"
 
+  get 'api_applications/new'
+
   get 'api_applications/:id', :as => "api_application", :to => "api_applications#show"
 
-  get 'api_applications/new'
+
 
   get 'api_applications/:id/edit', :to => "api_applications#edit"
 
@@ -15,7 +19,7 @@ Rails.application.routes.draw do
 
   delete 'api_applications/:id', :to => "api_applications#destroy"
 
-  root "users#index"
+  get "/register", :to => "users#new", :as => "registration"
   resources :users
 
   get "/login", to: "users#login", as: "login"
