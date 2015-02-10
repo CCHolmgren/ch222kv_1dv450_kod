@@ -30,4 +30,6 @@
       <%= link_to 'Destroy', @api_application, method: :delete, data: {confirm: 'Are you sure?'} %>
 
     </div>
+    <% else %>
+<%= link_to "Create an application", new_api_application_path %>
 <% end %>

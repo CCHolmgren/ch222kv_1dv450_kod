@@ -1,24 +1,25 @@
 Rails.application.routes.draw do
   root "users#index"
 
-  get 'api_applications', :to => "api_applications#index", :as => "api_applications"
 
-  post 'api_applications', :to => "api_applications#create"
+  #get 'api_applications', :to => "api_applications#index", :as => "api_applications"
 
-  get 'api_applications/new'
+  #post 'api_applications', :to => "api_applications#create"
 
-  get 'api_applications/:id', :as => "api_application", :to => "api_applications#show"
+  #get 'api_applications/new', :to => "api_applications#new", :as => "new_api_application"
+
+  #get 'api_applications/:id', :as => "api_application", :to => "api_applications#show"
 
 
 
-  get 'api_applications/:id/edit', :to => "api_applications#edit"
+  #get 'api_applications/:id/edit', :to => "api_applications#edit"
 
-  patch 'api_applications/:id', :to => "api_applications#update"
+  #patch 'api_applications/:id', :to => "api_applications#update"
 
-  put 'api_applications/:id', :to => "api_applications#update"
+  #put 'api_applications/:id', :to => "api_applications#update"
 
-  delete 'api_applications/:id', :to => "api_applications#destroy"
-
+  #delete 'api_applications/:id', :to => "api_applications#destroy"
+  resources :api_applications
   get "/register", :to => "users#new", :as => "registration"
   resources :users
 
