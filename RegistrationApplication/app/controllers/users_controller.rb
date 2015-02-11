@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    flash[:current_user] = current_user
     @users = User.all
   end
 
