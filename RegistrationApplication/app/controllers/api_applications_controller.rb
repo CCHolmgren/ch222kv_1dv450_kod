@@ -20,9 +20,11 @@ class ApiApplicationsController < ApplicationController
   end
 
   def index
-    @api_application = current_user.api_application
-    if current_user.is_administrator
-      @api_applications = ApiApplication.all
+    if current_user
+      @api_application = current_user.api_application
+      if current_user.is_administrator
+        @api_applications = ApiApplication.all
+      end
     end
   end
 
