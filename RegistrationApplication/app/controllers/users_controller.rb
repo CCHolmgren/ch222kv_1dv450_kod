@@ -103,10 +103,7 @@ class UsersController < ApplicationController
       end
     end
     def correct_user
-      if not current_user.is_administrator or  not current_user?(@user)
-        flash[:notice] = "You can't edit that user"
-        redirect_to :root
-      end
+        redirect_to :root, notice: "You can't edit that user" unless current_user.is_administrator or current_user?(@user)
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params

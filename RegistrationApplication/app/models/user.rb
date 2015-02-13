@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_one :api_application
+  has_many :api_applications
   before_save { self.email = email.downcase }
   validates :username, presence: true, length: { maximum: 50, minimum: 4 }
   validates :email, presence: true, length: { maximum: 255 }, uniqueness: { case_sensitive: false }
