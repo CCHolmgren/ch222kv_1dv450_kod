@@ -1,6 +1,6 @@
 class ApiApplicationsController < ApplicationController
   require "securerandom"
-  before_action :logged_in
+  before_action :logged_in_user
   before_action :set_application, only: [:edit, :show, :update, :destroy]
   before_action :check_authorization, only: [:edit, :show, :update, :destroy]
 
@@ -12,7 +12,7 @@ class ApiApplicationsController < ApplicationController
 
     respond_to do |format|
       if @application.save
-        format.html { redirect_to @application, notice: 'User was succexiessfully created.' }
+        format.html { redirect_to @application, notice: 'Application was successfully created.' }
         format.json { render :show, status: :created, location: @application }
       else
         format.html { render :new }
@@ -32,7 +32,7 @@ class ApiApplicationsController < ApplicationController
   end
 
   def new
-    @api_application = ApiApplication.new(user: current_user)
+    @api_application = current_user.api_applications.new
   end
 
   def edit
@@ -56,18 +56,18 @@ class ApiApplicationsController < ApplicationController
   end
 
   private
-  def application_params
-    params.require(:api_application).permit(:name, :description, :url)
-  end
+    def application_params
+      params.require(:api_application).permit(:name, :description, :url)
+    end
 
-  def set_application
-    @api_application = ApiApplication.find(params[:id])
-  end
+    def set_application
+      @api_application = ApiApplication.find(params[:id])
+    end
 
-  def check_authorization
-    redirect_to :back unless @api_application.user == current_user ||current_user.is_administrator?
-  end
-  def logged_in
-    redirect_to login_path unless logged_in?
-  end
+    def check_authorization
+      redirect_to :back unless @api_application.user == current_user ||current_user.is_administrator?
+    end
+    def logged_in
+      redirect_to login_path unless logged_in?
+    end
 end
