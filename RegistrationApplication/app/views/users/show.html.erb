@@ -5,11 +5,12 @@
   <%= @user.username %>
 </p>
 
+<% if current_user == @user or current_user.is_administrator? %>
 <p>
   <strong>Password digest:</strong>
   <%= @user.password_digest %>
 </p>
-
+<% end %>
 <p>
   <strong>Is administrator:</strong>
   <%= @user.is_administrator %>

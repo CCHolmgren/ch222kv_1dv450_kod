@@ -1,18 +1,19 @@
 class ApiApplicationsController < ApplicationController
   require "securerandom"
   before_action :logged_in_user
+  before_action :new_application, only: [:new]
   before_action :set_application, only: [:edit, :show, :update, :destroy]
   before_action :check_authorization, only: [:edit, :show, :update, :destroy]
 
   def create
-    @application = current_user.api_applications.new(application_params)
+    @api_application = current_user.api_applications.new(application_params)
 
-    @application.client_key = SecureRandom.hex(n=32)
-    @application.client_secret = SecureRandom.hex(n=32)
+    @api_application.client_key = SecureRandom.hex(n=32)
+    @api_application.client_secret = SecureRandom.hex(n=32)
 
     respond_to do |format|
-      if @application.save
-        format.html { redirect_to @application, notice: 'Application was successfully created.' }
+      if @api_application.save
+        format.html { redirect_to @api_application, notice: 'Application was successfully created.' }
         format.json { render :show, status: :created, location: @application }
       else
         format.html { render :new }
@@ -32,7 +33,7 @@ class ApiApplicationsController < ApplicationController
   end
 
   def new
-    @api_application = current_user.api_applications.new
+    @api_application = ApiApplication.new
   end
 
   def edit
@@ -56,6 +57,9 @@ class ApiApplicationsController < ApplicationController
   end
 
   private
+    def new_application
+      @api_application = ApiApplication.new
+    end
     def application_params
       params.require(:api_application).permit(:name, :description, :url)
     end

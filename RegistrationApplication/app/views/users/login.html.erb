@@ -2,5 +2,6 @@
 <%= form_for(:session, url: login_path) do |f| %>
     <%= f.text_field :username %>
     <%= f.password_field :password %>
+    <%= f.check_box :remember_me %>
     <%= f.submit "Login" %>
 <% end %>

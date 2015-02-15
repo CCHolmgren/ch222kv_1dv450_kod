@@ -12,7 +12,7 @@
     <% if current_user.is_administrator %>
         <span>You are an administrator, good job!</span>
     <% end %>
-    <%= link_to "Register an api application", api_applications_url %>
+    <%= link_to "Register an api application", new_api_application_url %>
     <%= link_to "View your api applications", api_applications_url %>
     <%= link_to "Logout", logout_url %>
 <% else %>

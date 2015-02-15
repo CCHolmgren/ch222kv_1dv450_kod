@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   resources :users
 
   get "/login", to: "users#login", as: "login"
-  post "/login", to: "users#login_post"
+  post "/login", to: "users#login"
   post "/logout", :to => "users#logout_post", :as => "logout"
   get "/logout", :to => "users#logout_post"
 

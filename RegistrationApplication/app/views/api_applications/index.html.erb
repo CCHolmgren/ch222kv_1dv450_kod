@@ -13,7 +13,7 @@
       <tbody>
       <% @api_applications.each do |application| %>
           <tr>
-            <td><%= application.name %></td>
+            <td><%= link_to application.name, application %></td>
             <td><%= application.description %></td>
             <td><%= link_to application.user.username, application.user %></td>
             <td><%= link_to 'Destroy', application, method: :delete, data: {confirm: 'Are you sure?'} %></td>
