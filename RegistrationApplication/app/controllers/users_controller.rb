@@ -31,8 +31,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.html { redirect_to login_url, notice: 'User was successfully created.' }
+        format.json { render :show, status: :created, location: login_url }
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -65,27 +65,19 @@ class UsersController < ApplicationController
   end
 
   def login
-    session[:return_to] ||= request.referer
-  end
-  def login_post
-    user = User.find_by(username: params[:session][:username])
-    if user.nil?
-      flash[:fail] = "Could not find a user with username " + params[:session][:username]
-      redirect_to login_url
-    else
-      user.authenticate(params[:session][:password])
-      log_in user
-      flash[:signed_in] = "Logged in as " + user.username
-      if session[:return_to]
-        flash[:notice] = "Redirecting to where you came from"
-        redirect_to session.delete(:return_to)
-      else
+    if request.post?
+      user = User.find_by(username: params[:session][:username])
+      if user && user.authenticate(params[:session][:password])
+        log_in user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_to users_url
       end
     end
   end
+  def login_post
+  end
   def logout_post
-    log_out
+    log_out if logged_in?
     respond_to do |format|
       format.html { redirect_to :root, notice: "Logged out" }
     end
@@ -96,12 +88,7 @@ class UsersController < ApplicationController
     def set_user
       @user = User.find(params[:id])
     end
-    def logged_in_user
-      unless logged_in?
-        flash[:danger] = "Please log in. Before doing that."
-        redirect_to login_url
-      end
-    end
+
     def correct_user
         redirect_to :root, notice: "You can't edit that user" unless current_user.is_administrator or current_user?(@user)
     end

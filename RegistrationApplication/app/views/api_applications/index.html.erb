@@ -1,6 +1,7 @@
 <h1>ApiApplication#index</h1>
 <p>Find me in app/views/api_application/index.html.erb</p>
 <% if @api_applications %>
+    <%= will_paginate %>
     <table>
       <thead>
       <tr>
@@ -21,15 +22,7 @@
       <% end %>
       </tbody>
     </table>
-<% end %>
-<% if @api_application %>
-    <div>
-      <p>Your application</p>
-
-      <%= link_to @api_application.name, @api_application %>
-      <%= link_to 'Destroy', @api_application, method: :delete, data: {confirm: 'Are you sure?'} %>
-
-    </div>
+    <%= will_paginate %>
     <% else %>
 <%= link_to "Create an application", new_api_application_path %>
 <% end %>
