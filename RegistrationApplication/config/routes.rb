@@ -1,17 +1,4 @@
 Rails.application.routes.draw do
-  get 'tags/index'
-
-  get 'tags/show'
-
-  get 'tags/new'
-
-  get 'tags/edit'
-
-  get 'tags/create'
-
-  get 'tags/update'
-
-  get 'tags/destroy'
 
   root "users#index"
 
@@ -36,6 +23,8 @@ Rails.application.routes.draw do
   resources :api_applications
   get "/register", :to => "users#new", :as => "registration"
   resources :users
+
+  get "/api/v1/user", :to => "api#index"
 
   get "/login", to: "users#login", as: "login"
   post "/login", to: "users#login"

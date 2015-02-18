@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RegistrationApplication</title>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <% stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <% javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -13,7 +16,11 @@
         <span>You are an administrator, good job!</span>
     <% end %>
     <%= link_to "Register an api application", new_api_application_url %>
-    <%= link_to "View your api applications", api_applications_url %>
+    <% if current_user.is_administrator %>
+        <%= link_to "View all applications", api_applications_url %>
+    <% else %>
+        <%= link_to "View your api applications", api_applications_url %>
+    <% end %>
     <%= link_to "Logout", logout_url %>
 <% else %>
     <%= link_to "Login", login_url %>
@@ -23,7 +30,7 @@
     <div class="alert alert-<%= message_type %>"><%= message %></div>
 <% end %>
 <%= yield %>
-<%= debug(params) if Rails.env.development? %>
+<pre><code><%= debug(params) if Rails.env.development? %></code></pre>
 
 </body>
 </html>

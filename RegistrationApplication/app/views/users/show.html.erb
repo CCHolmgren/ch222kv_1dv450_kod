@@ -4,13 +4,6 @@
   <strong>Username:</strong>
   <%= @user.username %>
 </p>
-
-<% if current_user == @user or current_user.is_administrator? %>
-<p>
-  <strong>Password digest:</strong>
-  <%= @user.password_digest %>
-</p>
-<% end %>
 <p>
   <strong>Is administrator:</strong>
   <%= @user.is_administrator %>
@@ -21,5 +14,7 @@
   <%= @user.email %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<% if current_user == @user %>
+<%= link_to 'Edit', edit_user_path(@user), :class => "button" %>
+    <% end %>
+<%= link_to 'Back', users_path, :class => "button" %>

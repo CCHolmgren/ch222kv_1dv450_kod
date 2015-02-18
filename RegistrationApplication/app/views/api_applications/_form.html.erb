@@ -11,19 +11,25 @@
         </div>
     <% end %>
 
-    <div class="field">
-      <%= f.label :name %><br>
-      <%= f.text_field :name %>
+    <div class="row">
+        <div class="field six columns">
+          <%= f.label :name %><br>
+          <%= f.text_field :name, :class => "u-full-width" %>
+        </div>
     </div>
-    <div class="field">
+    <div class="row">
+    <div class="field six columns">
       <%= f.label :description %><br>
-      <%= f.text_field :description %>
+      <%= f.text_field :description, :class => "u-full-width"  %>
     </div>
-    <div class="field">
+    </div>
+    <div class="row">
+    <div class="field six columns">
       <%= f.label :url %><br>
-      <%= f.text_field :url%>
+      <%= f.text_field :url, :class => "u-full-width" %>
+    </div>
     </div>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit :class => "button-primary" %>
     </div>
 <% end %>

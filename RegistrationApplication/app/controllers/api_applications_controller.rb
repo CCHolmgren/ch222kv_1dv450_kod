@@ -1,7 +1,6 @@
 class ApiApplicationsController < ApplicationController
   require "securerandom"
   before_action :logged_in_user
-  before_action :new_application, only: [:new]
   before_action :set_application, only: [:edit, :show, :update, :destroy]
   before_action :check_authorization, only: [:edit, :show, :update, :destroy]
 
@@ -23,9 +22,9 @@ class ApiApplicationsController < ApplicationController
   end
 
   def index
-    @api_applications = current_user.api_applications
+    @api_applications = current_user.api_applications.paginate(page: params[:page])
     if current_user.is_administrator
-      @api_applications = ApiApplication.all
+      @api_applications = ApiApplication.all.paginate(page: params[:page])
     end
   end
 
@@ -57,9 +56,6 @@ class ApiApplicationsController < ApplicationController
   end
 
   private
-    def new_application
-      @api_application = ApiApplication.new
-    end
     def application_params
       params.require(:api_application).permit(:name, :description, :url)
     end

@@ -6,6 +6,7 @@
 <p>URL: <%= @api_application.url %></p>
 <p>Client key: <%= @api_application.client_key %></p>
 <p>Client secret: <%= @api_application.client_secret %></p>
-<%= link_to "Edit", edit_api_application_path %>
 
-<%= link_to 'Back', api_applications_path %>
+<%= link_to "Edit", edit_api_application_path, class: "button" %>
+
+<%= link_to 'Back', api_applications_path, class: "button" %>

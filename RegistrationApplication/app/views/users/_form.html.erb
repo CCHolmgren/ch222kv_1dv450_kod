@@ -11,23 +11,31 @@
         </div>
     <% end %>
 
-    <div class="field">
-      <%= f.label :username %><br>
-      <%= f.text_field :username %>
+    <div class="row">
+      <div class="field three columns">
+        <%= f.label :username %><br>
+        <%= f.text_field :username, :class => "u-full-width"  %>
+      </div>
     </div>
-    <div class="field">
-      <%= f.label :password %><br>
-      <%= f.password_field :password %>
+    <div class="row">
+      <div class="six columns">
+        <div class="field three columns">
+          <%= f.label :password %><br>
+          <%= f.password_field :password, :class => "u-full-width" %>
+        </div>
+        <div class="field">
+          <%= f.label :password_confirmation %><br>
+          <%= f.password_field :password_confirmation%>
+        </div>
+      </div>
     </div>
-    <div class="field">
-      <%= f.label :password_confirmation %><br>
-      <%= f.password_field :password_confirmation %>
-    </div>
-    <div class="field">
-      <%= f.label :email %><br>
-      <%= f.email_field :email %>
+    <div class="row">
+      <div class="field three columns">
+        <%= f.label :email %><br>
+        <%= f.email_field :email, :class => "u-full-width"  %>
+      </div>
     </div>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit :class => "button-primary" %>
     </div>
 <% end %>
