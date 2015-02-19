@@ -6,7 +6,6 @@ class TagsController < ApiController
   end
 
   def show
-
   end
 
   def new
@@ -26,9 +25,20 @@ class TagsController < ApiController
   end
 
   def update
+    respond_to do |format|
+      if tag.update(tag_params)
+        format.html { redirect_to @tag, notice: 'Tag was successfully updated.' }
+        format.json { render :show, status: :ok, location: @tag }
+      else
+        format.html { render :edit }
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
+    @tag.destroy
+    redirect_to :tags
   end
 
   private
