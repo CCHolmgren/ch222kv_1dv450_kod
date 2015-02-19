@@ -19,7 +19,7 @@
     <% if current_user.is_administrator %>
         <%= link_to "View all applications", api_applications_url %>
     <% else %>
-        <%= link_to "View your api applications", api_applications_url %>
+        <%= link_to "View your applications", api_applications_url %>
     <% end %>
     <%= link_to "Logout", logout_url %>
 <% else %>
