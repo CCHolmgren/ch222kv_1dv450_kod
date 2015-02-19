@@ -64,25 +64,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def login
-    if request.post?
-      user = User.find_by(username: params[:session][:username])
-      if user && user.authenticate(params[:session][:password])
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_to users_url
-      end
-    end
-  end
-  def login_post
-  end
-  def logout_post
-    log_out if logged_in?
-    respond_to do |format|
-      format.html { redirect_to :root, notice: "Logged out" }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

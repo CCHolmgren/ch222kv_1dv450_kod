@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   root "users#index"
 
 
@@ -26,10 +25,10 @@ Rails.application.routes.draw do
 
   get "/api/v1/user", :to => "api#index"
 
-  get "/login", to: "users#login", as: "login"
-  post "/login", to: "users#login"
-  post "/logout", :to => "users#logout_post", :as => "logout"
-  get "/logout", :to => "users#logout_post"
+  get "/login", to: "sessions#login", as: "login"
+  post "/login", to: "sessions#login"
+  post "/logout", :to => "sessions#logout", :as => "logout"
+  get "/logout", :to => "sessions#logout"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
