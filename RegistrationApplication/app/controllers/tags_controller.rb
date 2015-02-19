@@ -6,6 +6,7 @@ class TagsController < ApiController
   end
 
   def show
+    respond_with @tag
   end
 
   def new
