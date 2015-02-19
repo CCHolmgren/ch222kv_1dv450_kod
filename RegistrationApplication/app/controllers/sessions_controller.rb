@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def login
     if request.post?
-      user = User.find_by(username: params[:session][:username])
+      user = User.where("lower(username) = ?", params[:session][:username].downcase).first
       if user && user.authenticate(params[:session][:password])
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
@@ -17,5 +17,7 @@ class SessionsController < ApplicationController
         format.html { redirect_to :root, notice: "Logged out" }
       end
     end
+  end
+  def index
   end
 end

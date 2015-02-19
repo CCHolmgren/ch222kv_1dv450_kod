@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
-  root "users#index"
+  get 'errors/file_not_found'
 
+  get 'errors/unprocessable'
+
+  get 'errors/internal_server_error'
+
+  match "/404", to: "errors#file_not_found", via: :all
+  match "/422", to: "errors#unprocessable", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
+  root "sessions#index"
 
   #get 'api_applications', :to => "api_applications#index", :as => "api_applications"
 
@@ -9,7 +17,6 @@ Rails.application.routes.draw do
   #get 'api_applications/new', :to => "api_applications#new", :as => "new_api_application"
 
   #get 'api_applications/:id', :as => "api_application", :to => "api_applications#show"
-
 
 
   #get 'api_applications/:id/edit', :to => "api_applications#edit"

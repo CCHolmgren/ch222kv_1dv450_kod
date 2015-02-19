@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   attr_accessor :remember_token
   has_many :api_applications
   before_save { self.email = email.downcase }
-  validates :username, presence: true, length: { maximum: 50, minimum: 4 }
+  validates :username, presence: true, length: { maximum: 50, minimum: 4 }, :case_sensitive => false
   validates :email, presence: true, length: { maximum: 255 }, uniqueness: { case_sensitive: false }
   validates :email, format: { with: /@/ }
   validates :password, length: { minimum: 6 }, allow_blank: true
