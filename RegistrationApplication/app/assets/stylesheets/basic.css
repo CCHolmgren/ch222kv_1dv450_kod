@@ -1,0 +1,27 @@
+.alert {
+    color:#555;
+    border-radius:10px;
+    font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
+    padding:10px 10px 10px 36px;
+    margin:10px;
+}
+.alert span {
+    font-weight:bold;
+    text-transform:uppercase;
+}
+.alert-error {
+    background:#ffecec;
+    border:1px solid #f5aca6;
+}
+.alert-success {
+    background:#e9ffd9;
+    border:1px solid #a6ca8a;
+}
+.alert-warning {
+    background:#fff8c4;
+    border:1px solid #f2c779;
+}
+.alert-notice {
+    background:#e3f7fc;
+    border:1px solid #8ed9f6;
+}

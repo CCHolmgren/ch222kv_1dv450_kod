@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  get 'events/index'
+
+  get 'events/show'
+
+  get 'events/new'
+
+  get 'events/edit'
+
+  get 'events/destroy'
+
+  get 'positions/index'
+
+  get 'positions/show'
+
   get 'errors/file_not_found'
 
   get 'errors/unprocessable'
@@ -30,7 +44,15 @@ Rails.application.routes.draw do
   get "/register", :to => "users#new", :as => "registration"
   resources :users
 
-  get "/api/v1/user", :to => "api#index"
+  scope 'api' do
+    scope 'v1' do
+      resources :tags
+      resources :events
+      resources :positions
+
+      get "/users/:id", :to => "api#index"
+    end
+  end
 
   get "/login", to: "sessions#login", as: "login"
   post "/login", to: "sessions#login"

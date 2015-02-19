@@ -28,4 +28,14 @@ class User < ActiveRecord::Base
   def forget
     update_attribute(:remember_digest, nil)
   end
+  def serializable_hash(options={})
+    options = {
+        only: [:username, :is_administrator],
+        methods: [:self_link]
+    }.update(options)
+    super(options)
+  end
+  def self_link
+    { :self => "http://localhost:3000/api/v1/users/#{self.id}"}
+  end
 end

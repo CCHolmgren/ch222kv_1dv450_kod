@@ -1,10 +1,5 @@
 class ApiController < ApplicationController
   before_action :check_key
-  respond_to :json
-
-  def index
-    respond_with User.find(1)
-  end
 
   private
     def check_key

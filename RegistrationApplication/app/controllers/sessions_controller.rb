@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :check_logged_in, only: [:login]
+  before_action :check_logout, only: [:logout]
   def login
     if request.post?
       user = User.where("lower(username) = ?", params[:session][:username].downcase).first
@@ -7,6 +9,7 @@ class SessionsController < ApplicationController
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_to users_url
       end
+      flash.now[:error] = "That combination did not seem to work."
     end
   end
 
@@ -20,4 +23,12 @@ class SessionsController < ApplicationController
   end
   def index
   end
+
+  private
+    def check_logged_in
+      redirect_to :root unless !logged_in?
+    end
+    def check_logout
+      redirect_to :root unless logged_in?
+    end
 end

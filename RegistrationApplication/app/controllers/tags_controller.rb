@@ -1,7 +1,8 @@
-class TagsController < ApplicationController
+class TagsController < ApiController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
+  respond_to :json
   def index
-    @tags = Tag.all
+    respond_with Tag.all #@tags = Tag.all
   end
 
   def show
