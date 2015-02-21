@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   require "securerandom"
   attr_accessor :remember_token
   has_many :api_applications
+  has_many :events
   before_save { self.email = email.downcase }
   validates :username, presence: true, length: { maximum: 50, minimum: 4 }, :case_sensitive => false
   validates :email, presence: true, length: { maximum: 255 }, uniqueness: { case_sensitive: false }
@@ -31,11 +32,12 @@ class User < ActiveRecord::Base
   def serializable_hash(options={})
     options = {
         only: [:username, :is_administrator],
+        include: [:events => {only: [:name, :id, :short_description], include: []}],
         methods: [:self_link]
     }.update(options)
     super(options)
   end
   def self_link
-    { :self => "http://localhost:3000/api/v1/users/#{self.id}"}
+    { :url => "http://localhost:3000/api/v1/users/#{self.id}"}
   end
 end

@@ -49,8 +49,8 @@ Rails.application.routes.draw do
       resources :tags
       resources :events
       resources :positions
-
-      get "/users/:id", :to => "api#index"
+      resources :users
+      #get "/users/:id", :to => "api#index"
     end
   end
 

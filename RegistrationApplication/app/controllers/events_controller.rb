@@ -1,9 +1,12 @@
 class EventsController < ApiController
-  before_action :set_event
+  before_action :set_event, only: [:show, :update, :destroy]
   respond_to :json
 
   def index
-    respond_with Event.all
+    offset = (params[:offset] or 0)
+    limit = (params[:limit] or 5)
+    @events = Event.all.order("created_at DESC")
+    respond_with events: @events, total: Event.count, limit: limit, offset: offset, next: nil, previous: nil
   end
 
   def show
@@ -41,6 +44,6 @@ class EventsController < ApiController
       @event = Event.find(params[:id])
     end
     def event_params
-      params.require(:event).permit(:tag_id, :name, :short_description, :description)
+      params.require(:event).permit(:tag_ids, :name, :short_description, :description)
     end
 end

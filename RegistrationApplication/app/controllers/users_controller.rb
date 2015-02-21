@@ -2,16 +2,20 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
-
+  respond_to :json, :html
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    offset = (params[:offset] or 0)
+    limit = (params[:limit] or 5)
+    @users = User.all.offset(offset).limit(limit)
+    respond_with users: @users, total: User.count, limit: limit, offset: offset, next: nil, previous: nil
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    respond_with @user
   end
 
   # GET /users/new
@@ -65,16 +69,17 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    def correct_user
-        redirect_to :root, notice: "You can't edit that user" unless current_user.is_administrator or current_user?(@user)
-    end
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:username, :password, :password_confirmation, :email)
-    end
+  def correct_user
+    redirect_to :root, notice: "You can't edit that user" unless current_user.is_administrator or current_user?(@user)
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:username, :password, :password_confirmation, :email)
+  end
 end
