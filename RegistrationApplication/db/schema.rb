@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150221141935) do
+ActiveRecord::Schema.define(version: 20150221195445) do
 
   create_table "api_applications", force: :cascade do |t|
     t.string   "name"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20150221141935) do
     t.integer  "user_id"
   end
 
+  create_table "event_tags", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "tag_id"
+  end
+
+  add_index "event_tags", ["event_id"], name: "index_event_tags_on_event_id"
+  add_index "event_tags", ["tag_id"], name: "index_event_tags_on_tag_id"
+
   create_table "events", force: :cascade do |t|
     t.integer  "tag_id"
     t.integer  "user_id"
@@ -35,6 +43,14 @@ ActiveRecord::Schema.define(version: 20150221141935) do
     t.decimal  "latitude"
     t.decimal  "longitude"
   end
+
+  create_table "events_tags", id: false, force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "tag_id"
+  end
+
+  add_index "events_tags", ["event_id"], name: "index_events_tags_on_event_id"
+  add_index "events_tags", ["tag_id"], name: "index_events_tags_on_tag_id"
 
   create_table "positions", force: :cascade do |t|
     t.decimal  "longitude"

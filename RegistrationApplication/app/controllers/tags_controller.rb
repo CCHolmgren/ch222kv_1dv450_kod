@@ -1,6 +1,7 @@
 class TagsController < ApiController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   respond_to :json
+
   def index
     respond_with Tag.all #@tags = Tag.all
   end
@@ -15,11 +16,17 @@ class TagsController < ApiController
 
   def edit
   end
+  def select_on_tag
+    @events = Tag.find(params[:id]).events
+    #Is there some other way to do this to not create a nesting of
+    #event -> tags -> events?
+    respond_with @events.to_json(include: [:tags => {include: []}])
+  end
 
   def create
     @tag = Tag.new(tag_params)
     if @tag.save
-      redirect_to :tags
+      respond_with { redirect_to :tags }
     else
       render :new
     end
@@ -39,14 +46,15 @@ class TagsController < ApiController
 
   def destroy
     @tag.destroy
-    redirect_to :tags
+    respond_with { redirect_to :tags }
   end
 
   private
-    def set_tag
-      @tag = Tag.find(params[:id])
-    end
-    def tag_params
-      params.require(:tag).permit(:name)
-    end
+  def set_tag
+    @tag = Tag.find(params[:id])
+  end
+
+  def tag_params
+    params.require(:tag).permit(:name)
+  end
 end
