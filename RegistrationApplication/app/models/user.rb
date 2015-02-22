@@ -32,6 +32,9 @@ class User < ActiveRecord::Base
   def serializable_hash(options={})
     options = {
         only: [:username, :is_administrator],
+        #The empty include makes it so that the includes in the serialize doesn't get carried over
+        #We also do not really want to provide any more information than necessary, so just
+        #provide some information, not all
         include: [:events => {only: [:name, :id, :short_description], include: []}],
         methods: [:self_link]
     }.update(options)

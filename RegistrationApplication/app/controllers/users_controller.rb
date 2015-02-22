@@ -6,10 +6,32 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    offset = (params[:offset] or 0)
-    limit = (params[:limit] or 5)
+    #This clamps the offset and limit values between 0 and Event.count-1, since there isnt a clamp function in ruby
+    offset = [0, params[:offset].to_i, User.count-1].sort[1]
+    #This also clamps, between 1 and 5
+    limit = [1, params[:limit].to_i, 5].sort[1]
+    #Sort asc since that means start from id 1 and work upwards
     @users = User.all.offset(offset).limit(limit)
-    respond_with users: @users, total: User.count, limit: limit, offset: offset, next: nil, previous: nil
+
+    count = @users.count
+
+    #If the offset + limit selects higher items than there is, no next_link
+    if offset+limit >= User.count
+      next_link = nil
+    elsif count < User.count
+      next_link = "http://localhost:3000/api/v1/users/?offset=#{offset+limit}&limit=#{limit}"
+    else
+      next_link = nil
+    end
+    #If the offset is larger than 0, there must be atleast 1 item before
+    if offset > 0 && User.count > 0
+      #Do note that offset - limit can become negative, but since offset gets clamped, it doesn't really matter
+      previous = "http://localhost:3000/api/v1/users/?offset=#{offset-limit}&limit=#{limit}"
+    else
+      previous = nil
+    end
+
+    respond_with users: @users, total: User.count, limit: limit, offset: offset, next: next_link, previous: previous
   end
 
   # GET /users/1
