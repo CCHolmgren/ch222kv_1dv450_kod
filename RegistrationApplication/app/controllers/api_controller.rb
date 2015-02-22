@@ -4,6 +4,6 @@ class ApiController < ApplicationController
 
   private
     def check_key
-      render json: { error: "The provided token wasn't correct" }, status: :bad_request unless ApiApplication.exists?(client_key: request.headers["Authorization"])
+      render json: { error: "The provided Authroization token wasn't correct. You must provide a valid one that you can get from the api registration page." }, status: :unauthorized unless ApiApplication.exists?(client_key: request.headers["Authorization"])
     end
 end

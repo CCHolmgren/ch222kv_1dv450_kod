@@ -1,18 +1,44 @@
 class EventsController < ApiController
   before_action :set_event, only: [:show, :update, :destroy]
   respond_to :json
+  rescue_from ActionController::ParameterMissing, with: :raise_bad_format
 
   def index
-    offset = (params[:offset] or 0)
-    limit = (params[:limit] or 5)
-    @events = Event.all.order("created_at DESC")
-    respond_with events: @events, total: Event.count, limit: limit, offset: offset, next: nil, previous: nil
+    #This clamps the offset and limit values between 0 and Event.count-1, since there isnt a clamp function in ruby
+    offset = [0, params[:offset].to_i, Event.count-1].sort[1]
+    #This also clamps, between 1 and 5
+    limit = [1, params[:limit].to_i, 5].sort[1]
+    #Sort asc since that means start from id 1 and work upwards
+    @events = Event.all.order("created_at ASC").offset(offset).limit(limit)
+
+    count = @events.count
+
+    #If the offset + limit selects higher items than there is, no next_link
+    if offset+limit >= Event.count
+      next_link = nil
+    elsif count < Event.count
+      next_link = "http://localhost:3000/api/v1/events/?offset=#{offset+limit}&limit=#{limit}"
+    else
+      next_link = nil
+    end
+    #If the offset is larger than 0, there must be atleast 1 item before
+    if offset > 0 && Event.count > 0
+      #Do note that offset - limit can become negative, but since offset gets clamped, it doesn't really matter
+      previous = "http://localhost:3000/api/v1/events/?offset=#{offset-limit}&limit=#{limit}"
+    else
+      previous = nil
+    end
+
+    respond_with events: @events, total: Event.count, limit: limit, offset: offset, next: next_link, previous: previous
   end
 
   def show
     respond_with @event
   end
-
+  def select_on_user
+    @events = Event.where user: params[:user_id]
+    respond_with events: @events
+  end
   def new
     @event = Event.new
   end
@@ -21,14 +47,10 @@ class EventsController < ApiController
   end
 
   def update
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
+    if @event.update(event_params)
+      respond_with { redirect_to @event, notice: 'Event was successfully updated.', status: :ok }
+    else
+      respond_with errors: @event.errors, status: :unprocessable_entity
     end
   end
 
@@ -46,4 +68,13 @@ class EventsController < ApiController
     def event_params
       params.require(:event).permit(:tag_ids, :name, :short_description, :description)
     end
+    def raise_bad_format
+      respond_with ErrorMessage.new("This was a bad request", "Something went wrong with the request."), status: :bad_request
+    end
+end
+class ErrorMessage
+  def initialize(dev_mess, usr_mess)
+    @developerMessage = dev_mess
+    @userMessage = usr_mess
+  end
 end
