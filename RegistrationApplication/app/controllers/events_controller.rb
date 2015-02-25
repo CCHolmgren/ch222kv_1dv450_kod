@@ -35,15 +35,38 @@ class EventsController < ApiController
   def show
     respond_with @event
   end
+
   def select_on_user
     @events = Event.where user: params[:user_id]
     respond_with events: @events
   end
+
   def new
     @event = Event.new
   end
 
   def edit
+  end
+
+  # Searches for events given the query
+  # GET /search?q=
+  # q is a space separated string which can contain quotes
+  # the quoted substring is searched for verbatim
+
+  # NOTE: This function requires that the database can handle ILIKE and ANY array, which postgresql does
+  # SQLite does not
+  def search
+    #A bit complicated
+    #This allows us to search for things like: "is this" real world
+    #And it will behave like google search does
+    #But only for quoted strings, no complicated stuff
+    @events = Event.where("description ILIKE ANY (array[?])",
+                          params[:q].
+                              #Split on spaces, unless they are in quotes
+                              split(/\s(?=(?:[^"]|"[^"]*")*$)/).
+                              #Probably a better way to do this, create a string that is %thing% without the quotes
+                              map { |thing| "%#{thing.tr('"', '')}%" })
+    respond_with events: @events
   end
 
   def update
@@ -61,16 +84,19 @@ class EventsController < ApiController
       format.json { head :no_content }
     end
   end
+
   private
-    def set_event
-      @event = Event.find(params[:id])
-    end
-    def event_params
-      params.require(:event).permit(:tag_ids, :name, :short_description, :description)
-    end
-    def raise_bad_format
-      respond_with ErrorMessage.new("This was a bad request", "Something went wrong with the request."), status: :bad_request
-    end
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  def event_params
+    params.require(:event).permit(:tag_ids, :name, :short_description, :description)
+  end
+
+  def raise_bad_format
+    respond_with ErrorMessage.new("This was a bad request", "Something went wrong with the request."), status: :bad_request
+  end
 end
 class ErrorMessage
   def initialize(dev_mess, usr_mess)
