@@ -11,6 +11,6 @@ class Tag < ActiveRecord::Base
     super(options)
   end
   def self_link
-    {:url => "http:localhost:3000/api/v1/tags/#{self.id}"}
+    {:url => "#{Rails.configuration.baseurl}#{tag_path(self)}"}
   end
 end

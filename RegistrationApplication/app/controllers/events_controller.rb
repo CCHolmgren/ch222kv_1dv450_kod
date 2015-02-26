@@ -1,33 +1,11 @@
 class EventsController < ApiController
   before_action :set_event, only: [:show, :update, :destroy]
+  before_action :offset_params, only: [:index, :proximity]
   respond_to :json
   rescue_from ActionController::ParameterMissing, with: :raise_bad_format
 
   def index
-    #This clamps the offset and limit values between 0 and Event.count-1, since there isnt a clamp function in ruby
-    offset = [0, params[:offset].to_i, Event.count-1].sort[1]
-    #This also clamps, between 1 and 5
-    limit = [1, params[:limit].to_i, 5].sort[1]
-    #Sort asc since that means start from id 1 and work upwards
-    @events = Event.all.order("created_at ASC").offset(offset).limit(limit)
-
-    count = @events.count
-
-    #If the offset + limit selects higher items than there is, no next_link
-    if offset+limit >= Event.count
-      next_link = nil
-    elsif count < Event.count
-      next_link = "http://localhost:3000/api/v1/events/?offset=#{offset+limit}&limit=#{limit}"
-    else
-      next_link = nil
-    end
-    #If the offset is larger than 0, there must be atleast 1 item before
-    if offset > 0 && Event.count > 0
-      #Do note that offset - limit can become negative, but since offset gets clamped, it doesn't really matter
-      previous = "http://localhost:3000/api/v1/events/?offset=#{offset-limit}&limit=#{limit}"
-    else
-      previous = nil
-    end
+    @events, next_link, previous, limit, offset = Event.limit_output(@limit, @offset)
 
     respond_with events: @events, total: Event.count, limit: limit, offset: offset, next: next_link, previous: previous
   end
@@ -46,6 +24,15 @@ class EventsController < ApiController
   end
 
   def edit
+  end
+
+  def proximity
+    @events = Event.all.where(latitude: (params[:min_lat].to_i)..(params[:max_lat].to_i), longitude: (params[:min_lng].to_i)..(params[:max_lng].to_i)).
+        order("created_at ASC").
+        offset(@offset).
+        limit(@limit)
+
+    respond_with events: @events, total: @events.count, limit: @limit, offset: @offset
   end
 
   # Searches for events given the query

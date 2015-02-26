@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     scope 'v1' do
 
       get "/events/search", :to => "events#search"
+      get "/events/location", :to => "events#proximity"
       resources :tags
       resources :events
       resources :positions

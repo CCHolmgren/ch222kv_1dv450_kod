@@ -41,6 +41,6 @@ class User < ActiveRecord::Base
     super(options)
   end
   def self_link
-    { :url => "http://localhost:3000/api/v1/users/#{self.id}"}
+    { :url => "#{Rails.configuration.baseurl}#{user_path(self)}"}
   end
 end
