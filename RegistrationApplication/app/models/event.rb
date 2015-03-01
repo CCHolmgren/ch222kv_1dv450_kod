@@ -7,12 +7,12 @@ class Event < ActiveRecord::Base
   def serializable_hash(options={})
     options = {
         only: [:id, :name, :short_description, :description, :latitude, :longitude, :created_at],
-        include: [:tags => {only: [:name]}, :user =>
+        include: [tags: {only: [:name]}, user:
                           #Limit so that it doesn't nest forever
                           #Also, we only need a bit of info, if we want more, just go to the self link
-                          { :only =>
-                                [:username, :is_administrator], :include => [], :methods => [:self_link] }],
-        methods: [:self_link]
+                          { only:
+                                [:username, :is_administrator], include: [], methods: [:links] }],
+        methods: [:links]
     }.update(options)
     super(options)
   end
@@ -34,9 +34,9 @@ class Event < ActiveRecord::Base
     else
       previous = nil
     end
-    return @events, next_link, previous, limit, offset
+    return @events, next_link, previous
   end
-  def self_link
-    {:url => "#{Rails.configuration.baseurl}#{event_path(self)}"}
+  def links
+    [{rel: "self", href: "#{Rails.configuration.baseurl}#{event_path(self)}"}]
   end
 end

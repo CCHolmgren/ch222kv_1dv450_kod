@@ -6,8 +6,8 @@ class ApiController < ApplicationController
   def offset_params
     #This clamps the offset and limit values between 0 and Infinity, since there isnt a clamp function in ruby
     @offset = [0, params[:offset].to_i, 1.0 / 0].sort[1]
-    #This also clamps, between 1 and 5
-    @limit = [10, params[:limit].to_i, 50].sort[1]
+    #This also clamps, between 1 and 50
+    @limit = [1, params[:limit].to_i, 50].sort[1]
   end
   private
     def check_key

@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
+
   require "securerandom"
   attr_accessor :remember_token
   has_many :api_applications
@@ -35,12 +37,12 @@ class User < ActiveRecord::Base
         #The empty include makes it so that the includes in the serialize doesn't get carried over
         #We also do not really want to provide any more information than necessary, so just
         #provide some information, not all
-        include: [:events => {only: [:name, :id, :short_description], include: []}],
-        methods: [:self_link]
+        include: [events: {only: [:name, :id, :short_description], include: []}],
+        methods: [:links]
     }.update(options)
     super(options)
   end
-  def self_link
-    { :url => "#{Rails.configuration.baseurl}#{user_path(self)}"}
+  def links
+    { rel: "self", href: "#{Rails.configuration.baseurl}#{user_path(self)}"}
   end
 end

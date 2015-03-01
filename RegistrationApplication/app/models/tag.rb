@@ -5,12 +5,12 @@ class Tag < ActiveRecord::Base
   def serializable_hash(options={})
     options = {
         only: [:name, :id],
-        include: [:events => {only: [:id, :name, :short_description], include:[], methods: [:self_link]}],
-        methods: [:self_link]
+        include: [events:  {only: [:id, :name, :short_description], include:[], methods: [:self_link]}],
+        methods: [:links]
     }.update(options)
     super(options)
   end
-  def self_link
-    {:url => "#{Rails.configuration.baseurl}#{tag_path(self)}"}
+  def links
+    { rel: "self", href: "#{Rails.configuration.baseurl}#{tag_path(self)}"}
   end
 end
