@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :select_on_user]
   before_action :logged_in_user, only: [:edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]
   respond_to :json, :html
@@ -32,6 +32,11 @@ class UsersController < ApplicationController
     end
 
     respond_with users: @users, total: User.count, limit: limit, offset: offset, next: next_link, previous: previous
+  end
+
+  def select_on_user
+    @events = @user.events
+    respond_with events: @events
   end
 
   # GET /users/1

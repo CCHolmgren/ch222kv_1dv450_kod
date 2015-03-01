@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       resources :users
       get "/events/user/:user_id", :to => "events#select_on_user"
       get "/tags/:id/events/", :to => "tags#select_on_tag"
+      get "/users/:id/events/", :to => "users#select_on_user"
       #get "/users/:id", :to => "api#index"
     end
   end

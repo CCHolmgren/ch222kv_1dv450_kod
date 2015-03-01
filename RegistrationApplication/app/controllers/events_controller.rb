@@ -1,12 +1,12 @@
 class EventsController < ApiController
-  include EventsHelper
+  include ApiHelper
   before_action :set_event, only: [:show, :update, :destroy]
   before_action :offset_params, only: [:index, :proximity, :search]
   respond_to :json
   rescue_from ActionController::ParameterMissing, with: :raise_bad_format
 
   def index
-    @events, next_link, previous = limit_output(Event.all.order("created_at ASC"), @limit, @offset)
+    @events, next_link, previous = limit_output(Event.all.order("created_at ASC"), @limit, @offset, Event)
 
     respond_with events: @events,
                  total: Event.count,
@@ -31,7 +31,14 @@ class EventsController < ApiController
   def new
     @event = Event.new
   end
-
+  def create
+    @event = Event.new(event_params)
+    if @event.save
+      respond_with { redirect_to :events }
+    else
+      render :new
+    end
+  end
   def edit
   end
 
@@ -48,7 +55,7 @@ class EventsController < ApiController
 
     _events = Event.all.where(latitude: min_lat..max_lat, longitude: min_lng..max_lng).
         order("created_at ASC")
-    @events, next_link, previous = limit_output(_events, @limit, @offset, "#{events_location_path}")
+    @events, next_link, previous = limit_output(_events, @limit, @offset, "#{events_location_path}", Event)
 
     respond_with events: @events,
                  total: @events.count,

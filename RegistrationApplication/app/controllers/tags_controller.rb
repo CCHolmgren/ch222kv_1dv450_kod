@@ -1,13 +1,24 @@
 class TagsController < ApiController
+  include ApiHelper
+
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
+  before_action :offset_params
   respond_to :json
 
   def index
-    respond_with Tag.all #@tags = Tag.all
+    @tags, next_link, previous = limit_output(Tag.all, @limit, @offset, "#{tags_path}", Tag)
+
+    respond_with tags: @tags,
+                 total: Tag.count,
+                 limit: @limit,
+                 offset: @offset,
+                 next: next_link,
+                 previous: previous,
+                 links: [{rel: "tags", href: "#{Rails.configuration.baseurl}#{tags_path}"}]
   end
 
   def show
-    respond_with @tag
+    respond_with tag: @tag
   end
 
   def new
@@ -20,7 +31,7 @@ class TagsController < ApiController
     @events = Tag.find(params[:id]).events
     #Is there some other way to do this to not create a nesting of
     #event -> tags -> events?
-    respond_with @events.to_json(include: [:tags => {include: []}])
+    respond_with events: @events.to_json(include: [:tags => {include: []}])
   end
 
   def create
