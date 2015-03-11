@@ -6,7 +6,7 @@ class EventsController < ApiController
   rescue_from ActionController::ParameterMissing, with: :raise_bad_format
 
   def index
-    @events, next_link, previous = limit_output(Event.all.order("created_at ASC"), @limit, @offset, Event)
+    @events, next_link, previous = limit_output(Event.all.order("created_at ASC"), @limit, @offset, "#{events_path}",Event)
 
     respond_with events: @events,
                  total: Event.count,
@@ -20,7 +20,13 @@ class EventsController < ApiController
   end
 
   def show
-    respond_with @event
+    unless @event.nil?
+      respond_with @event, status: :ok
+    else
+      @error = {status: 400, message: "invalid id"}
+      respond_with @error, status: :not_found
+    end
+
   end
 
   def select_on_user
@@ -116,7 +122,7 @@ class EventsController < ApiController
 
   private
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.find_by_id(params[:id])
   end
 
   def event_params

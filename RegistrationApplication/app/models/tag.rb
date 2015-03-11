@@ -1,4 +1,5 @@
 class Tag < ActiveRecord::Base
+  include Rails.application.routes.url_helpers
   has_and_belongs_to_many :events
   validates :name, presence: true, length: { maximum: 50, minimum: 4 }, uniqueness: { case_sensitive: false }
 
