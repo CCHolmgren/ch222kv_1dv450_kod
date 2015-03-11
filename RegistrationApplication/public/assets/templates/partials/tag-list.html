@@ -1,0 +1,21 @@
+<div class="container">
+    <h3>Tags</h3>
+
+    <div class="col-md-6">
+        Search: <input ng-model="searchTag">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Events</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="t in tags.tagsList | filter:searchTag">
+                <td>{{t.name}}</td>
+                <td><span ng-repeat="e in t.events">{{e.id}}|</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
