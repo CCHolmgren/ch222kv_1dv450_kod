@@ -22,6 +22,7 @@ class ApiController < ApplicationController
     end
     def authenticate_token
       return unless request.headers["Authorization"].present?
-      Token.find_by(value: request.headers["Authorization"].split.last).user
+      @token = Token.find_by(value: request.headers["Authorization"].split.last)
+      @token.user unless @token.expiry <= Time.now
     end
 end
