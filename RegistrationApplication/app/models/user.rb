@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   include Rails.application.routes.url_helpers
-
   require "securerandom"
+
   attr_accessor :remember_token
   has_many :api_applications
   has_many :events
@@ -43,6 +43,6 @@ class User < ActiveRecord::Base
     super(options)
   end
   def links
-    { rel: "self", href: "#{Rails.configuration.baseurl}#{user_path(self)}"}
+    { rel: "self", href: "#{user_path(self)}"}
   end
 end

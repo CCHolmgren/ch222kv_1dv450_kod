@@ -1,29 +1,29 @@
 Rails.application.routes.draw do
-  get 'static/index'
+  #get 'static/index'
 
-  get 'events/index'
+  #get 'events/index'
 
-  get 'events/show'
+  #get 'events/show'
 
-  get 'events/new'
+  #get 'events/new'
 
-  get 'events/edit'
+  #get 'events/edit'
 
-  get 'events/destroy'
+  #get 'events/destroy'
 
-  get 'positions/index'
+  #get 'positions/index'
 
-  get 'positions/show'
+  #get 'positions/show'
 
-  get 'errors/file_not_found'
+  #get 'errors/file_not_found'
 
-  get 'errors/unprocessable'
+  #get 'errors/unprocessable'
 
-  get 'errors/internal_server_error'
+  #get 'errors/internal_server_error'
 
-  match "/404", to: "errors#file_not_found", via: :all
-  match "/422", to: "errors#unprocessable", via: :all
-  match "/500", to: "errors#internal_server_error", via: :all
+  #match "/404", to: "errors#file_not_found", via: :all
+  #match "/422", to: "errors#unprocessable", via: :all
+  #match "/500", to: "errors#internal_server_error", via: :all
 
 
   #get 'api_applications', :to => "api_applications#index", :as => "api_applications"
@@ -43,7 +43,7 @@ Rails.application.routes.draw do
 
   #delete 'api_applications/:id', :to => "api_applications#destroy"
   resources :api_applications
-  get "/register", :to => "users#new", :as => "registration"
+  #get "/register", :to => "users#new", :as => "registration"
   resources :users
 
   scope 'api' do
@@ -62,10 +62,10 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/login", to: "sessions#login", as: "login"
+  #get "/login", to: "sessions#login", as: "login"
   post "/login", to: "sessions#login"
   post "/logout", :to => "sessions#logout", :as => "logout"
-  get "/logout", :to => "sessions#logout"
+  #get "/logout", :to => "sessions#logout"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

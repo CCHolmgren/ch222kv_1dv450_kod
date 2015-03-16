@@ -1,15 +1,20 @@
 class SessionsController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :check_logged_in, only: [:login]
   before_action :check_logout, only: [:logout]
+  respond_to :json, :xml
   def login
     if request.post?
-      user = User.where("lower(username) = ?", params[:session][:username].downcase).first
-      if user && user.authenticate(params[:session][:password])
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_to users_url
+      p params[:session]
+      user = User.where("lower(username) = ?", params[:username]).first
+      if user && user.authenticate(params[:password])
+        #log_in user
+        #params[:remember_me] == '1' ? remember(user) : forget(user)
+        @token = Token.create(user: user, expiry: 15.hours.from_now)
+        render json: { token: @token, user: user } and return
       end
       flash.now[:error] = "That combination did not seem to work."
+      render json: {message: "That combination did not seem to work."}, status: :bad_request and return
     end
   end
 

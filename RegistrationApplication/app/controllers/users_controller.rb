@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_user, only: [:show, :edit, :update, :destroy, :select_on_user]
   before_action :logged_in_user, only: [:edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update, :destroy]

@@ -7,11 +7,11 @@ class Event < ActiveRecord::Base
   def serializable_hash(options={})
     options = {
         only: [:id, :name, :short_description, :description, :latitude, :longitude, :created_at],
-        include: [tags: {only: [:name]}, user:
+        include: {user: {include: []}, tags: {only: [:name], include: []}}, #user:
                           #Limit so that it doesn't nest forever
                           #Also, we only need a bit of info, if we want more, just go to the self link
-                          { only:
-                                [:username, :is_administrator], include: [], methods: [:links] }],
+                          #{ only:
+                           #     [:username, :is_administrator], include: [], methods: [:links] }],
         methods: [:links]
     }.update(options)
     super(options)
@@ -23,20 +23,20 @@ class Event < ActiveRecord::Base
     if offset+limit >= Event.count
       next_link = nil
     elsif count < Event.count
-      next_link = "#{Rails.configuration.baseurl}#{event_path(self)}?offset=#{offset+limit}&limit=#{limit}"
+      next_link = "#{event_path(self)}?offset=#{offset+limit}&limit=#{limit}"
     else
       next_link = nil
     end
     #If the offset is larger than 0, there must be atleast 1 item before
     if offset > 0 && Event.count > 0
       #Do note that offset - limit can become negative, but since offset gets clamped, it doesn't really matter
-      previous = "#{Rails.configuration.baseurl}#{event_path(self)}?offset=#{offset-limit}&limit=#{limit}"
+      previous = "#{event_path(self)}?offset=#{offset-limit}&limit=#{limit}"
     else
       previous = nil
     end
     return @events, next_link, previous
   end
   def links
-    [{rel: "self", href: "#{Rails.configuration.baseurl}#{event_path(self)}"}]
+    [{rel: "self", href: "#{event_path(self)}"}]
   end
 end

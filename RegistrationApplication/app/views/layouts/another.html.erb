@@ -15,7 +15,9 @@
 <h1 class="jumbotrone">Hello AngularJS - Demo7!</h1>
 <hr />
 <!-- Includes a shared view (menu) -->
-<div ng-include src="'assets/templates/partials/shared/menu.html'"> Should be replaced?</div>
+<div ng-controller="MenuController as menu">
+    <div ng-include src="'assets/templates/partials/shared/menu.html'"> Should be replaced?</div>
+</div>
 <hr />
 
 <!-- This part will be replaced by diffrent views specified in the app.js -->
@@ -29,13 +31,21 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular-route.js"></script>
 <script src="assets/javascripts/angular/libs/angular-localstorage.js"></script>
 
+<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+<script src="https://rawgit.com/lodash/lodash/3.5.0/lodash.min.js"></script>
+<script src="https://rawgit.com/angular-ui/angular-google-maps/master/dist/angular-google-maps.min.js"></script>
+
 <script src="assets/javascripts/main.js"></script>
 
 <script src="assets/javascripts/angular/services/EventService.js"></script>
 <script src="assets/javascripts/angular/services/TagService.js"></script>
 <script src="assets/javascripts/angular/services/ResourceService.js"></script>
 <script src="assets/javascripts/angular/controllers/EventListCtrl.js"></script>
+<script src="assets/javascripts/angular/controllers/EventDetailCtrl.js"></script>
 <script src="assets/javascripts/angular/controllers/TagListCtrl.js"></script>
+<script src="assets/javascripts/angular/controllers/LoginCtrl.js"></script>
+<script src="assets/javascripts/angular/controllers/LogoutCtrl.js"></script>
+<script src="assets/javascripts/angular/controllers/MenuCtrl.js"></script>
 
 
 </body>

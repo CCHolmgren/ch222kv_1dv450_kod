@@ -32,12 +32,18 @@ class EventsController < ApiController
   def select_on_user
     @events = Event.where user: params[:user_id]
     respond_with events: @events
+  rescue RangeError
+    render json: {message: "Your provided id is out of range, try a smaller one"}, status: :bad_request
   end
 
   def new
     @event = Event.new
   end
   def create
+    if @user.nil?
+      render json: {message: "You are not authorized to create a new event"}, status: :unauthorized
+      return
+    end
     @event = Event.new(event_params)
     if @event.save
       respond_with { redirect_to :events }
@@ -113,25 +119,28 @@ class EventsController < ApiController
   end
 
   def destroy
-    @event.destroy
-    respond_to do |format|
-      format.html { redirect_to tags_url, notice: 'Event was successfully destroyed.' }
-      format.json { head :no_content }
+    p @user
+    if @event.user == @user or @user.is_administrator
+      @event.destroy
+      render json: {message: "Removed event"}, status: :ok
+      return
+    else
+      render json: {message: "You are not authorized to remove that event"}, status: :unauthorized
     end
   end
 
   private
-  def set_event
-    @event = Event.find_by_id(params[:id])
-  end
+    def set_event
+      @event = Event.find_by_id(params[:id])
+    end
 
-  def event_params
-    params.require(:event).permit(:tag_ids, :name, :short_description, :description)
-  end
+    def event_params
+      params.require(:event).permit(:tag_ids, :name, :short_description, :description)
+    end
 
-  def raise_bad_format
-    respond_with ErrorMessage.new("This was a bad request", "Something went wrong with the request."), status: :bad_request
-  end
+    def raise_bad_format
+      respond_with ErrorMessage.new("This was a bad request", "Something went wrong with the request."), status: :bad_request
+    end
 end
 class ErrorMessage
   def initialize(dev_mess, usr_mess)
