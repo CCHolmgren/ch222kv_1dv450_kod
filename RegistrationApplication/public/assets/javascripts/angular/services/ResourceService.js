@@ -84,7 +84,8 @@ function ResourceService($http, API) {
                 url: url,
                 headers: {
                     'Accept': API.format,
-                    'X-APIKEY': API.key
+                    'X-APIKEY': API.key,
+                    'Authorization': "fae3ca98ef2d44cf89d8f49a5fa027d2"
                 },
                 params: {
                     'limit': '500'
@@ -115,6 +116,23 @@ function ResourceService($http, API) {
                 return new Resource(response.data);
             });
         };
+        Resource.removeItem = function(id){
+            var req = {
+                method: 'DELETE',
+                url: API.url + collectionName + "/" + id, // this is the entry point in my example
+                headers: {
+                    'Accept': API.format,
+                    'X-APIKEY': API.key,
+                    'Authorization':API.key
+                },
+                params: {
+                    'limit': '20'
+                }
+            };
+            return $http(req).then(function(response){
+                return new Resource(response.data);
+            })
+        }
 
         return Resource;
     }

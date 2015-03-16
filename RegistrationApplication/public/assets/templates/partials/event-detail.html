@@ -1,0 +1,12 @@
+<div>
+    <h3>Information about the event</h3>
+    <p>
+        Name: {{ event.event.name }}
+    </p>
+    <div ng-if="event.user.is_administrator || (event.user.username == event.event.user.username)">
+        <pre><code>{{event}}</code></pre>
+        <form ng-submit="event.remove()">
+            <input type="submit" text="Remove">
+        </form>
+    </div>
+</div>

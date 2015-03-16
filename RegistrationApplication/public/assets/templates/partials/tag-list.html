@@ -13,7 +13,7 @@
             <tbody>
             <tr ng-repeat="t in tags.tagsList | filter:searchTag">
                 <td>{{t.name}}</td>
-                <td><span ng-repeat="e in t.events">{{e.id}}|</span></td>
+                <td><span ng-repeat="e in t.events"><a ng-href="events/{{e.id}}">{{e.short_description}}</a>|</span></td>
             </tr>
             </tbody>
         </table>

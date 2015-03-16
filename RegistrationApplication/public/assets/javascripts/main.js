@@ -1,5 +1,6 @@
 angular
-    .module('demo7App', ['ngRoute', 'LocalStorageModule']) // you must inject the ngRoute (included as a separate js-file)
+    .module('demo7App', ['ngRoute', 'LocalStorageModule','uiGmapgoogle-maps'])
+    // you must inject the ngRoute (included as a separate js-file)
     .config(['$routeProvider', '$locationProvider',
         function($routeProvider, $locationProvider) {
             $routeProvider.
@@ -18,15 +19,25 @@ angular
                         }
                     }
                 }).
+                when('/login', {
+                    templateUrl: 'assets/templates/partials/login.html',
+                    controller: 'LoginController',
+                    controllerAs: 'login'
+                }).
+                when('/logout', {
+                    templateUrl: 'assets/templates/partials/logout.html',
+                    controller: 'LogoutController',
+                    controllerAs: 'logout'
+                }).
                 when('/events', {
                     templateUrl: 'assets/templates/partials/event-list.html',
                     controller: 'EventListController',
                     controllerAs: 'events' // players could be seen as an instance of the controller, use it in the view!
                 }).
-                when('/player/:id', {
-                    templateUrl: 'assets/templates/partials/player-detail.html',
-                    controller: 'PlayerDetailController',
-                    controllerAs: 'player'
+                when('/events/:id', {
+                    templateUrl: 'assets/templates/partials/event-detail.html',
+                    controller: 'EventDetailController',
+                    controllerAs: 'event' // players could be seen as an instance of the controller, use it in the view!
                 }).
                 when('/tags', {
                     templateUrl: 'assets/templates/partials/tag-list.html',
@@ -55,4 +66,23 @@ angular
         'playersKey' : 'p', // just some keys for sessionStorage-keys
         'tagsKey'   : 't',
         'eventsKey'  : 'e'
+    }).factory('authInterceptor', function($rootScope, $q, localStorageService){
+        return {
+            request: function(config){
+                config.headerse = config.headers || {};
+                if(localStorageService.get('token')){
+                    console.log(localStorageService.get('token'));
+                    config.headers.Authorization = 'Bearer ' +localStorageService.get('token').value;
+                }
+                return config;
+            },
+            response: function(response){
+                if(response.status == 401){
+
+                }
+                return response || $q.when(response);
+            }
+        }
+    }).config(function($httpProvider){
+        $httpProvider.interceptors.push('authInterceptor');
     });

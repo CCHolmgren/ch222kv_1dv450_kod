@@ -7,6 +7,10 @@
             <a class="navbar-brand" data-ng-href=".">Home</a>
             <a class="navbar-brand" data-ng-href="events">All events</a>
             <a class="navbar-brand" data-ng-href="tags">Tags</a>
+            <a class="navbar-brand" ng-href="login" ng-if="!menu.token">Login</a>
+            <a class="navbar-brand" ng-href="logout" ng-if="menu.token">Logout</a>
+            <a class="navbar-brand">{{menu.username}}</a>
+            {{menu}}
         </div>
     </div>
 </nav>

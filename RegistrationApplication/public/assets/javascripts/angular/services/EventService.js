@@ -24,8 +24,26 @@ function EventService(resourceService, localStorage, LS, $q){
             }
             return deferred.promise;
         },
+        getEvent:function(id){
+            var deferred = $q.defer();
+            Event.getSingle({instanceName: "events", id: id}).then(function(data){
+                deferred.resolve(data);
+            });
+            return deferred.promise;
+        },
+        clearEvents: function(){
+            console.log("Removing", localStorage.get(LS.eventsKey));
+            localStorage.remove(LS.eventsKey);
+        },
         clearcache: function(){
             localStorage.clearAll();
+        },
+        remove:function(id){
+            var deferred = $q.defer();
+            Event.removeItem(id).then(function(data){
+                deferred.resolve(data);
+            });
+            return deferred.promise;
         }
     }
 }
