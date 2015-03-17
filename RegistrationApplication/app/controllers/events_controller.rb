@@ -1,5 +1,6 @@
 class EventsController < ApiController
   include ApiHelper
+  before_action :authenticate, only: [:create, :update, :destroy]
   before_action :set_event, only: [:show, :update, :destroy]
   before_action :offset_params, only: [:index, :proximity, :search]
   respond_to :json
@@ -45,8 +46,10 @@ class EventsController < ApiController
       return
     end
     @event = Event.new(event_params)
+    @event.user = @user
     if @event.save
-      respond_with { redirect_to :events }
+      render json: {message: "Saved", event: @event}, stats: :successful
+      return
     else
       render :new
     end
@@ -111,8 +114,9 @@ class EventsController < ApiController
   end
 
   def update
+    p @event
     if @event.update(event_params)
-      respond_with { redirect_to @event, notice: 'Event was successfully updated.', status: :ok }
+      render json: {message: 'Event was successfully updated.', event: @event}, status: :ok
     else
       respond_with errors: @event.errors, status: :unprocessable_entity
     end
@@ -131,11 +135,13 @@ class EventsController < ApiController
 
   private
     def set_event
+      p params[:id]
       @event = Event.find_by_id(params[:id])
     end
 
     def event_params
-      params.require(:event).permit(:tag_ids, :name, :short_description, :description)
+      params[:event][:tag_ids] ||= []
+      params.require(:event).permit(:id, :name, :short_description, :description, :latitude, :longitude, :tag_ids => [])
     end
 
     def raise_bad_format

@@ -12,3 +12,4 @@ Added a Token based system, in which you send your login details to /login and y
 A little better handling of errors in the controllers, less red pages.
 More authorization, no deleting events that you did not create.
 Removed routes that should not be used.
+Authorization check moved to only where it is needed.

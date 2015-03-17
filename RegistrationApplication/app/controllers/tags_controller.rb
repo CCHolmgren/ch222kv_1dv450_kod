@@ -1,6 +1,6 @@
 class TagsController < ApiController
   include ApiHelper
-
+  before_action :authenticate, only: [:update, :create, :destroy]
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   before_action :offset_params
   respond_to :json
