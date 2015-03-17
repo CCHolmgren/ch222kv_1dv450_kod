@@ -3,7 +3,8 @@
 
     <div class="col-md-6">
         <a ng-click="events.all()">All</a> | <a ng-click="events.clearCache()">Clear cache</a>
-        <input ng-model="search.$" type="text">
+        <hr>
+        Search: <input ng-model="search.$" type="text">
         <table class="table">
             <thead>
             <tr>
@@ -13,21 +14,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="e in events.eventsList|filter:search">
-                <td><a ng-href="/events/{{e.id}}">{{e.name || "Missing name"}}</a></td>
-                <td><span ng-repeat="t in e.tags">{{t.name}}<span ng-if="$index+1 % 2 == 0">{{$index}}|</span></span>
-                </td>
-                <td>{{e.latitude}}{{e.longitude}}</td>
-            </tr>
+                <tr ng-if="!events.eventsList"><td>There seems to be no events</td></tr>
+                <tr ng-repeat="e in events.eventsList|filter:search">
+                    {{e}}
+                    <td><a ng-href="/events/{{e.id}}">{{e.name || "Missing name"}}</a></td>
+                    <td><span ng-repeat="t in e.tags">{{t.name}}<span ng-if="$index+1 % 2 == 0">{{$index}}|</span></span>
+                    </td>
+                    <td>{{e.latitude}}{{e.longitude}}</td>
+                </tr>
             </tbody>
         </table>
-        <div class="tags">
+        <div class="tags" ng-if="events.tags">
             <h4>Tags</h4>
             <div ng-repeat="tt in events.tags">
                 <div ng-click="events.filterEvents(tt)">{{tt}}</div>
             </div>
         </div>
-        <div class="users">
+        <div class="users" ng-if="events.users">
             <h4>Users</h4>
             <div ng-repeat="u in events.users">
                 <div ng-click="events.filterEventsByUser(u)">{{u}}</div>
@@ -38,13 +41,13 @@
         <div class="tags">
             <h4>Filtered by tags</h4>
             <div ng-repeat="f in events.filteredByTag">
-                <span ng-click="events.removeFilterByTag(f)">{{f}}</span>
+                <span>{{f}}<span ng-click="events.removeFilterByTag(f)">x</span></span>
             </div>
         </div>
         <div class="users">
             <h4>Filtered by user</h4>
             <div>
-                <span ng-click="events.removeFilterByUser()">{{events.filteredByUser}}</span>
+                <span ng-if="events.filteredByUser">{{events.filteredByUser}}<span ng-click="events.removeFilterByUser()">x</span></span>
             </div>
         </div>
     </div>
@@ -54,7 +57,6 @@
             width: 100%;
         }
     </style>
-    {{marker}}
     <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
         <ui-gmap-marker ng-repeat="m in events.markers" coords="{latitude:m.latitude, longitude:m.longitude}" idKey="m.idKey" ng-if="m.latitude && m.longitude"></ui-gmap-marker>
     </ui-gmap-google-map>

@@ -39,6 +39,11 @@ angular
                     controller: 'EventDetailController',
                     controllerAs: 'event' // players could be seen as an instance of the controller, use it in the view!
                 }).
+                when('/events/:id/edit', {
+                    templateUrl: 'assets/templates/partials/event-edit.html',
+                    controller: 'EventEditController',
+                    controllerAs: 'event' // players could be seen as an instance of the controller, use it in the view!
+                }).
                 when('/tags', {
                     templateUrl: 'assets/templates/partials/tag-list.html',
                     controller: 'TagListController',
@@ -66,19 +71,21 @@ angular
         'playersKey' : 'p', // just some keys for sessionStorage-keys
         'tagsKey'   : 't',
         'eventsKey'  : 'e'
-    }).factory('authInterceptor', function($rootScope, $q, localStorageService){
+    }).factory('authInterceptor', function($rootScope, $q, localStorageService, $location){
         return {
             request: function(config){
                 config.headerse = config.headers || {};
                 if(localStorageService.get('token')){
-                    console.log(localStorageService.get('token'));
+                    console.log("token in authinterceptor", localStorageService.get('token'));
                     config.headers.Authorization = 'Bearer ' +localStorageService.get('token').value;
                 }
                 return config;
             },
             response: function(response){
                 if(response.status == 401){
-
+                    toastr.warn("You must be signed in to do that. Please sign in before");
+                    var path = $location.path();
+                    $location.path('/login').search({next: path});
                 }
                 return response || $q.when(response);
             }

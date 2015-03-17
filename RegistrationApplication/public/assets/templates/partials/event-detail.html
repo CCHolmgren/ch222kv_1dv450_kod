@@ -3,7 +3,8 @@
     <p>
         Name: {{ event.event.name }}
     </p>
-    <div ng-if="event.user.is_administrator || (event.user.username == event.event.user.username)">
+    {{event}}
+    <div ng-if="event.user && (event.user.is_administrator || (event.user.username == event.event.user.username))">
         <pre><code>{{event}}</code></pre>
         <form ng-submit="event.remove()">
             <input type="submit" text="Remove">

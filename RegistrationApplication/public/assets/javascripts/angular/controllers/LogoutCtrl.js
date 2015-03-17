@@ -13,7 +13,9 @@ function LogoutController($rootScope, $location, localStorage) {
         $rootScope.token = null;
         localStorage.remove('token');
         $rootScope.$broadcast('tokenchanged', {key:'token', newvalue:null});
+        $rootScope.$broadcast('signedout');
         localStorage.clearAll();
+        toastr.success("Logged out!");
         $location.path('/');
     }
 }

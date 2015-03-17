@@ -11,17 +11,20 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
         vm.eventsList = Object.keys(data.events).map(function(key){console.log(key);return data.events[key]});
         vm.eventsListCopy = vm.eventsList;
         //Get all tags, and unnest the array
+        console.log("eventsList", vm.eventsList);
         vm.tags = vm.eventsList.map(function(event){
             //Each event has tags
             return event.tags;
         }).reduce(function(a,b){
             //Unnest those into a flat array
-            return a.concat(b[0].name);
+            b[0] = b[0] || {name: null};
+            return a.concat(b.name || []);
         },[]).reduce(function(p,c){
             if(p.indexOf(c) < 0) p.push(c);
             return p;
         }, []);
         vm.users =  vm.eventsList.map(function(event){
+            event.user = event.user || {username: null};
             return event.user.username;
         }).reduce(function(p,c){
             if(p.indexOf(c) < 0) p.push(c);

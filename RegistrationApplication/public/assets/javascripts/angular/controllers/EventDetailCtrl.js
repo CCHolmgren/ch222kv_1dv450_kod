@@ -12,10 +12,11 @@ function EventDetailController(eventService, $routeParams, localStorage, $locati
         console.log(data.data);
     });
     vm.remove = function(){
-        eventService.remove($routeParams.id).then(function(data){
+        eventService.remove($routeParams.id).success(function(data){
             console.log("Removed", data);
+            toastr.success("Successfully removed the event!");
             eventService.clearEvents();
-            $location.path('/');
+            $location.path('/events');
         });
     }
 }

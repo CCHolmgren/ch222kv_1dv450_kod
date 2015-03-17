@@ -44,6 +44,13 @@ function EventService(resourceService, localStorage, LS, $q){
                 deferred.resolve(data);
             });
             return deferred.promise;
+        },
+        update:function(event){
+            var deferred = $q.defer();
+            Event.updateItem(event).then(function(data){
+                deferred.resolve(data);
+            });
+            return deferred.promise;
         }
     }
 }

@@ -20,7 +20,21 @@ function ResourceService($http, API) {
         var Resource = function(data) {
             // Configuerar objectet enligt den data som kommer in - Allt är json
             angular.extend(this, data);
-        }
+        };
+
+        Resource.updateItem = function(item){
+            var req = {
+                method: 'PUT',
+                url: API.url + collectionName + '/' + item.id,
+                haeders: {
+                    'Accept': API.format
+                },
+                data: item
+            };
+            return $http(req).then(function(response){
+                return response;
+            });
+        };
 
         // Get all players from the API
         Resource.getCollection = function() {
@@ -34,7 +48,7 @@ function ResourceService($http, API) {
                     'Authorization':API.key
                 },
                 params: {
-                    'limit': '20'
+                    'limit': '100'
                 }
             };
             // This returns a promise which will be fullfilled when the response is back
@@ -86,9 +100,6 @@ function ResourceService($http, API) {
                     'Accept': API.format,
                     'X-APIKEY': API.key,
                     'Authorization': "fae3ca98ef2d44cf89d8f49a5fa027d2"
-                },
-                params: {
-                    'limit': '500'
                 }
             };
             // return the promise
@@ -132,7 +143,7 @@ function ResourceService($http, API) {
             return $http(req).then(function(response){
                 return new Resource(response.data);
             })
-        }
+        };
 
         return Resource;
     }
