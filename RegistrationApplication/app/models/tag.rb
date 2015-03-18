@@ -12,6 +12,6 @@ class Tag < ActiveRecord::Base
     super(options)
   end
   def links
-    { rel: "self", href: "#{tag_path(self)}"}
+    { rel: "self", href: "#{id}"}
   end
 end

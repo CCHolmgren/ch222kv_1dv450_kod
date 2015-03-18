@@ -2,6 +2,8 @@ class Event < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
   has_and_belongs_to_many :tags
+  accepts_nested_attributes_for :tags
+
   belongs_to :user
 
   def serializable_hash(options={})
@@ -37,6 +39,6 @@ class Event < ActiveRecord::Base
     return @events, next_link, previous
   end
   def links
-    [{rel: "self", href: "#{event_path(self)}"}]
+    [{rel: "self", href: "events/#{id}"}]
   end
 end

@@ -7,7 +7,7 @@ class EventsController < ApiController
   rescue_from ActionController::ParameterMissing, with: :raise_bad_format
 
   def index
-    @events, next_link, previous = limit_output(Event.all.order("created_at ASC"), @limit, @offset, "#{events_path}",Event)
+    @events, next_link, previous = limit_output(Event.all.order("created_at ASC").includes(:tags).includes(:user), @limit, @offset, "#{events_path}",Event)
 
     respond_with events: @events,
                  total: Event.count,
@@ -45,13 +45,17 @@ class EventsController < ApiController
       render json: {message: "You are not authorized to create a new event"}, status: :unauthorized
       return
     end
+    @tags = (params[:tags] || []).map{|tag|Tag.find_or_create_by(name:tag[:name])}
+
     @event = Event.new(event_params)
+    @event.tags << @tags
     @event.user = @user
+
     if @event.save
-      render json: {message: "Saved", event: @event}, stats: :successful
+      render json: {message: "Saved", event: @event}, status: :created
       return
     else
-      render :new
+      render json: {message:"Something went wrong", event: @event, errors: @event.errors, tag_errors: @tags.map(&:errors)}, status: :bad_request
     end
   end
   def edit
@@ -115,10 +119,19 @@ class EventsController < ApiController
 
   def update
     p @event
+    #@tags = params[:tags].map{|tag|
+#      Tag.find_or_create_by(name: tag[:name])
+#    }
+#    @event.tags << @tags
+    @tags = (params[:tags] || []).map{|tag|Tag.find_or_create_by(name:tag[:name])}
+    Event.transaction do
+      @event.tags.clear
+      @event.tags << @tags
+    end
     if @event.update(event_params)
       render json: {message: 'Event was successfully updated.', event: @event}, status: :ok
     else
-      respond_with errors: @event.errors, status: :unprocessable_entity
+      render json: { errors: @event.errors} , status: :unprocessable_entity
     end
   end
 
@@ -140,8 +153,8 @@ class EventsController < ApiController
     end
 
     def event_params
-      params[:event][:tag_ids] ||= []
-      params.require(:event).permit(:id, :name, :short_description, :description, :latitude, :longitude, :tag_ids => [])
+      p params
+      params.require(:event).permit(:id, :name, :short_description, :description, :latitude, :longitude, :tags)
     end
 
     def raise_bad_format

@@ -6,7 +6,7 @@ class TagsController < ApiController
   respond_to :json
 
   def index
-    @tags, next_link, previous = limit_output(Tag.all, @limit, @offset, "#{tags_path}", Tag)
+    @tags, next_link, previous = limit_output(Tag.all.includes(:events), @limit, @offset, "#{tags_path}", Tag)
 
     respond_with tags: @tags,
                  total: Tag.count,
