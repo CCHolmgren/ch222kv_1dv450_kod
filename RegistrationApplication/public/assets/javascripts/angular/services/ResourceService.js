@@ -109,19 +109,16 @@ function ResourceService($http, API) {
             });
         };
 
-        Resource.save = function(collectionName, data) {
+        Resource.save = function(data) {
+            console.log(data);
             var req = {
                 method: 'POST',
-                url: API.url +collectionName, // this is the entry point in my example
+                url: API.url + collectionName, // this is the entry point in my example
                 headers: {
                     'Accept': API.format,
-                    'X-APIKEY': API.key,
-                    'Authorization' : "hbhj6765g76g77rt7g9g6r56dvv"
+                    'X-APIKEY': API.key
                 },
-                params: {
-                    'limit': '500'
-                },
-                data : data
+                data: data
             };
             return $http(req).then(function(response){
                 return new Resource(response.data);

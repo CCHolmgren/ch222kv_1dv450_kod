@@ -12,8 +12,8 @@
             </thead>
             <tbody>
             <tr ng-repeat="t in tags.tagsList | filter:searchTag">
-                <td>{{t.name}}</td>
-                <td><span ng-repeat="e in t.events"><a ng-href="events/{{e.id}}">{{e.short_description}}</a>|</span></td>
+                <td><a ng-href="tag/{{t.id}}">{{t.name}}</a></td>
+                <td>{{t.events.length}}</td>
             </tr>
             </tbody>
         </table>

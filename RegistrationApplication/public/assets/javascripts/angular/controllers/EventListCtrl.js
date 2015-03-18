@@ -17,17 +17,21 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
             return event.tags;
         }).reduce(function(a,b){
             //Unnest those into a flat array
-            b[0] = b[0] || {name: null};
-            return a.concat(b.name || []);
+            return a.concat(b.reduce(function(x,y){
+                return x.concat(y.name);
+            }, []));
         },[]).reduce(function(p,c){
             if(p.indexOf(c) < 0) p.push(c);
             return p;
         }, []);
+        vm.eventsList.forEach(function(event){
+            event.tags = event.tags.splice(event.tags.length-5, 5);
+        });
         vm.users =  vm.eventsList.map(function(event){
             event.user = event.user || {username: null};
             return event.user.username;
         }).reduce(function(p,c){
-            if(p.indexOf(c) < 0) p.push(c);
+            if(p.indexOf(c) < 0 && c != null) p.push(c);
             return p;
         }, []);
         console.log(vm.eventsList);
@@ -38,6 +42,7 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
             return {latitude: element.latitude, longitude: element.longitude, idKey: i++};
         });
         console.log("markers:", vm.markers);
+        console.log("vm", vm);
     });
     vm.filterEvents = function(tt){
         if(vm.filteredByTag.indexOf(tt) < 0){

@@ -34,6 +34,11 @@ angular
                     controller: 'EventListController',
                     controllerAs: 'events' // players could be seen as an instance of the controller, use it in the view!
                 }).
+                when('/events/new',{
+                    templateUrl: 'assets/templates/partials/event-create.html',
+                    controller: 'EventCreateController',
+                    controllerAs: 'event'
+                }).
                 when('/events/:id', {
                     templateUrl: 'assets/templates/partials/event-detail.html',
                     controller: 'EventDetailController',

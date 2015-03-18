@@ -1,0 +1,16 @@
+<div>
+    <h3>Edit event</h3>
+    <p>
+        Name: {{ event.event.name }}
+    </p>
+    {{event}}
+    <form ng-submit="event.save()">
+        <input type="text" ng-model="event.event.name">
+        <input type="text" ng-model="event.event.short_description">
+        <input type="text" ng-model="event.event.description">
+        <input type="text" ng-model="event.event.latitude">
+        <input type="text" ng-model="event.event.longitude">
+        <input type="text" ng-model="event.event.tags">
+        <input type="submit" text="Save">
+    </form>
+</div>
