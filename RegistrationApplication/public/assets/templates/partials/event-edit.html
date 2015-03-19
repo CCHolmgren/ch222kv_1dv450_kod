@@ -15,11 +15,11 @@
         </div>
         <div class="form-group">
             <label for="longitude">Longitude</label>
-            <input type="text" id="longitude" ng-model="event.event.longitude" class="form-control"/>
+            <input type="number" id="longitude" ng-model="event.event.longitude" class="form-control" step="any"/>
         </div>
         <div class="form-group">
             <label for="latitude">Latitude</label>
-            <input type="text" id="latitude" ng-model="event.event.latitude" class="form-control">
+            <input type="number" id="latitude" ng-model="event.event.latitude" class="form-control" step="any"/>
         </div>
         <div class="form-group">
             <label for="tags">Tags</label>
@@ -37,4 +37,13 @@
             <input type="submit" text="Save" class="btn btn-primary">
         </div>
     </form>
+    <style>
+        .angular-google-map-container {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+        <ui-gmap-marker coords="{latitude:event.event.latitude, longitude:event.event.longitude}" idKey="1" ng-if="event.event.latitude && event.event.longitude"></ui-gmap-marker>
+    </ui-gmap-google-map>
 </div>

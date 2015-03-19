@@ -60,6 +60,15 @@ function EventService(resourceService, localStorage, LS, $q){
                 deferred.reject(arguments);
             });
             return deferred.promise;
+        },
+        search:function(query){
+            var deferred = $q.defer();
+            Event.search(query).then(function(data){
+                deferred.resolve(data);
+            }, function(){
+                deferred.reject(arguments);
+            });
+            return deferred.promise;
         }
     }
 }

@@ -132,14 +132,27 @@ function ResourceService($http, API) {
                     'Accept': API.format,
                     'X-APIKEY': API.key,
                     'Authorization':API.key
-                },
-                params: {
-                    'limit': '20'
                 }
             };
             return $http(req).then(function(response){
                 return new Resource(response.data);
             })
+        };
+
+        Resource.search = function(query){
+            var req = {
+                method: 'GET',
+                url: API.url + collectionName + '/search',
+                headers: {
+                    'Accept':API.format
+                },
+                params: {
+                    'q': query
+                }
+            };
+            return $http(req).then(function(response){
+                return new Resource(response.data);
+            });
         };
 
         return Resource;

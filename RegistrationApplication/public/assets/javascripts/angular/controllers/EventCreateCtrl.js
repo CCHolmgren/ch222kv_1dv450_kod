@@ -11,10 +11,11 @@ function EventCreateController(eventService, $routeParams, localStorage, $locati
     vm.save = function(){
         var event = angular.copy(vm.event);
         eventService.create(event).then(function(data){
-            toastr.info("Sent create request");
+            toastr.info("Created the event");
+            $location.path('events/' + data.data.event.id);
             console.log(data);
         }, function(){
-            console.log("Errors", arguments);
+            toastr.error("Something went wrong with the creation of the event. Please try again.", 'Error');
         });
     }
 }

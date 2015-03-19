@@ -1,2 +1,14 @@
 # ch222kv_1dv50_kod
-You must follow my instructions that are on the release page, or I will not help you.
+
+Install instructions for PostgreSQL on Windows:
+[instructions](http://www.postgresql.org/download/windows/)
+The best way is to use the graphical installer that they link on that page. It includes graphical tools for administrating PostgreSQL databases, which is really handy.
+
+Install instructions for PostgreSQL on Linux:
+[instructions](http://www.postgresql.org/download/linux/ubuntu/)
+
+Instructions on how to install and get PostgreSQL running.
+[manual](http://www.postgresql.org/docs/9.4/interactive/tutorial-install.html)
+It can be good to learn how to read a manual.
+
+Then read the message on the release for up to date instructions on how to get the application running.

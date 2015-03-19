@@ -8,17 +8,17 @@
   <title>AngularJS</title>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
 </head>
 <body>
 
 <h1 class="jumbotrone">Hello AngularJS - Demo7!</h1>
-<hr />
+<hr/>
 <!-- Includes a shared view (menu) -->
 <div ng-controller="MenuController as menu">
-    <div ng-include src="'assets/templates/partials/shared/menu.html'"> Should be replaced?</div>
+  <div ng-include src="'assets/templates/partials/shared/menu.html'"> Should be replaced?</div>
 </div>
-<hr />
+<hr/>
 
 <!-- This part will be replaced by diffrent views specified in the app.js -->
 <div ng-view>This should be replaced</div>
@@ -42,6 +42,7 @@
 <script src="assets/javascripts/angular/services/ResourceService.js"></script>
 <script src="assets/javascripts/angular/controllers/EventListCtrl.js"></script>
 <script src="assets/javascripts/angular/controllers/EventEditCtrl.js"></script>
+<script src="assets/javascripts/angular/controllers/EventSearchCtrl.js"></script>
 <script src="assets/javascripts/angular/controllers/EventCreateCtrl.js"></script>
 <script src="assets/javascripts/angular/controllers/EventDetailCtrl.js"></script>
 <script src="assets/javascripts/angular/controllers/TagListCtrl.js"></script>
@@ -50,12 +51,21 @@
 <script src="assets/javascripts/angular/controllers/MenuCtrl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <style>
-  .tag, .user {
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      display: inline-block;
-      padding: 6px 12px;
-  }
+    .tag, .user {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+    }
+
+    button.close {
+        float: initial;
+    }
+
+    .angular-google-map-container {
+        height: 400px;
+        width: 100%;
+    }
 </style>
 
 </body>

@@ -15,3 +15,4 @@ Removed routes that should not be used.
 Authorization check moved to only where it is needed.
 Based on the verbal presentation I chose to do optimize joins by using the includes method on the index pages of events and tags. Faster queries.
 Allow for creating and updating tags by passing them in the request by name.
+Bug in the event search method resolved.

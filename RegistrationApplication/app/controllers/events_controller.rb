@@ -107,7 +107,7 @@ class EventsController < ApiController
                               #Split on spaces, unless they are in quotes
                               split(/\s(?=(?:[^"]|"[^"]*")*$)/).
                               #Probably a better way to do this, create a string that is %thing% without the quotes
-                              map { |thing| "%#{thing.tr('"', '')}%" }), @limit, @offset,"#{events_search_path}")
+                              map { |thing| "%#{thing.tr('"', '')}%" }), @limit, @offset,"#{events_search_path}", Event)
     respond_with events: @events,
                  query: query,
                  limit: @limit,
@@ -123,10 +123,10 @@ class EventsController < ApiController
 #      Tag.find_or_create_by(name: tag[:name])
 #    }
 #    @event.tags << @tags
-    @tags = (params[:tags] || []).map{|tag|Tag.find_or_create_by(name:tag[:name])}
+    @tags = (params[:tags] || []).map{|tag|Tag.find_or_create_by(name:tag[:name].downcase)}
     Event.transaction do
       @event.tags.clear
-      @event.tags << @tags
+      @event.tags << @tags.uniq {|t|t.name}
     end
     if @event.update(event_params)
       render json: {message: 'Event was successfully updated.', event: @event}, status: :ok

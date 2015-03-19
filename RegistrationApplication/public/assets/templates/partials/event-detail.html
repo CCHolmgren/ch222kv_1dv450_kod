@@ -1,20 +1,36 @@
 <div>
-    <h3>Information about the event</h3>
-    <p>
-        Name: {{ event.event.name }}
-    </p>
-    {{event}}
-    <span>Name: {{event.event.name}}</span>
-    <p>Short description of event: {{event.event.short_description}}</p>
-    <div>{{event.event.description}}</div>
+    <div>
+        <h4>{{event.event.name}}</h4>
+    </div>
+    <hr>
+    <div>
+        <h4>Short description of event:</h4>
+        <p>{{event.event.short_description}}</p>
+    </div>
+    <hr>
+    <div>
+        <h4>Description:</h4>
+        <div>
+            <p>{{event.event.description}}</p>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <h4>Username:</h4>
+        <div>{{event.event.user.username || "No username available"}}</div>
+    </div>
+    <hr>
     <div class="tags">
         <h4>Tags</h4>
-        <span ng-repeat="t in event.event.tags">{{t.name}}</span>
+        <span ng-repeat="t in event.event.tags" class="tag">{{t.name}}</span>
     </div>
     <div ng-if="event.user && (event.user.is_administrator || (event.user.username == event.event.user.username))">
-        <pre><code>{{event}}</code></pre>
-        <form ng-submit="event.remove()">
-            <input type="submit" text="Remove">
+        <form>
+            <a ng-href="events/{{event.event.id}}/edit" class="btn btn-default">Edit</a>
+            <input type="submit" value="Remove" class="btn btn-warning" ng-confirm-message="Are you sure you want to delete {{event.event.name}}?" ng-confirm-click="remove()">
         </form>
     </div>
+    <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+        <ui-gmap-marker coords="{latitude:event.event.latitude, longitude:event.event.longitude}" idKey="1" ng-if="event.event.latitude && event.event.longitude"></ui-gmap-marker>
+    </ui-gmap-google-map>
 </div>

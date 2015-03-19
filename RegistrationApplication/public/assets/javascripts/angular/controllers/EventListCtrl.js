@@ -5,13 +5,14 @@ EventListController.$inject = ['$scope','EventService','uiGmapGoogleMapApi'];
 
 function EventListController($scope, eventService, uiGmapGoogleMapApi) {
     var vm = this;
+
     $scope.map = {center: {latitude: 51.219053, longitude: 4.404418 }, zoom: 14 };
     $scope.options = {scrollwheel: true};
+
     eventService.get().then(function(data){
         vm.eventsList = Object.keys(data.events).map(function(key){console.log(key);return data.events[key]});
-        vm.eventsListCopy = vm.eventsList;
+        vm.eventsListCopy = angular.copy(vm.eventsList);
         //Get all tags, and unnest the array
-        console.log("eventsList", vm.eventsList);
         vm.tags = vm.eventsList.map(function(event){
             //Each event has tags
             return event.tags;
@@ -27,6 +28,7 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
         vm.eventsList.forEach(function(event){
             event.tags = event.tags.splice(event.tags.length-5, 5);
         });
+
         vm.users =  vm.eventsList.map(function(event){
             event.user = event.user || {username: null};
             return event.user.username;
@@ -34,15 +36,14 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
             if(p.indexOf(c) < 0 && c != null) p.push(c);
             return p;
         }, []);
-        console.log(vm.eventsList);
         vm.filteredByTag = [];
         vm.filteredByUser = null;
         var i = 0;
-        vm.markers = vm.eventsList.map(function(element){
+        vm.markers = vm.eventsList.filter(function(element) {
+            return element.latitude && element.longitude;
+        }).map(function(element){
             return {latitude: element.latitude, longitude: element.longitude, idKey: i++};
         });
-        console.log("markers:", vm.markers);
-        console.log("vm", vm);
     });
     vm.filterEvents = function(tt){
         if(vm.filteredByTag.indexOf(tt) < 0){
@@ -65,6 +66,7 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
             vm.filterEvents(element);
         });
         vm.eventsList = vm.eventsList.filter(function(a){
+            a.user = a.user || {username:null};
             return a.user.username == u;
         });
         var i = 0;
@@ -98,6 +100,8 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
     };
     vm.clearCache = function(){
         eventService.clearEvents();
+        toastr.clear();
+        toastr.success("Cache cleared");
         console.log("Events cleared");
     };
     uiGmapGoogleMapApi.then(function(maps){
