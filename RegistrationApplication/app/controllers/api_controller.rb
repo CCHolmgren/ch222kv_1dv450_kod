@@ -20,9 +20,14 @@ class ApiController < ApplicationController
        @user = authenticate_token || check_key
     end
     def authenticate_token
+      p "Inside authenticate_token"
       return unless request.headers["Authorization"].present?
       @token = Token.find_by(value: request.headers["Authorization"].split.last)
       return if @token.nil?
-      @token.user unless @token.expiry <= Time.now
+      if @token.expiry >= Time.now
+        @token.user
+      else
+        render json: {message: "Your token has expired. Please generate a new token and try again", status: 401 }, status: :unauthorized
+      end
     end
 end

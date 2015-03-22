@@ -8,12 +8,9 @@ class SessionsController < ApplicationController
       p params[:session]
       user = User.where("lower(username) = ?", params[:username]).first
       if user && user.authenticate(params[:password])
-        #log_in user
-        #params[:remember_me] == '1' ? remember(user) : forget(user)
         @token = Token.create(user: user, expiry: 15.hours.from_now)
-        render json: { token: @token, user: user } and return
+        render json: { token: @token, user: user} and return
       end
-      flash.now[:error] = "That combination did not seem to work."
       render json: {message: "That combination did not seem to work."}, status: :bad_request and return
     end
   end

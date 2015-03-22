@@ -1,4 +1,4 @@
-angular.module("demo7App").factory("TagService", TagService);
+angular.module("RegistrationApp").factory("TagService", TagService);
 
 TagService.$inject = ['ResourceService', 'localStorageService', 'LocalStorageConstants', '$q'];
 

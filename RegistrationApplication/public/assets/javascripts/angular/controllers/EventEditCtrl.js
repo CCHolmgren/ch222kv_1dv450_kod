@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("EventEditController", EventEditController);
+    module("RegistrationApp").controller("EventEditController", EventEditController);
 
 EventEditController.$inject = ['EventService', '$routeParams','localStorageService', '$location', 'uiGmapGoogleMapApi','$scope'];
 

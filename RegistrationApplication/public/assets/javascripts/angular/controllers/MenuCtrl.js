@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("MenuController", MenuController);
+    module("RegistrationApp").controller("MenuController", MenuController);
 
 MenuController.$inject = ['$rootScope', 'localStorageService'];
 

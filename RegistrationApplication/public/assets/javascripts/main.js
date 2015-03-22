@@ -1,6 +1,5 @@
 angular
-    .module('demo7App', ['ngRoute', 'LocalStorageModule','uiGmapgoogle-maps'])
-    // you must inject the ngRoute (included as a separate js-file)
+    .module('RegistrationApp', ['ngRoute', 'LocalStorageModule','uiGmapgoogle-maps'])
     .config(['$routeProvider', '$locationProvider',
         function($routeProvider, $locationProvider) {
             $routeProvider.
@@ -32,7 +31,7 @@ angular
                 when('/events', {
                     templateUrl: 'assets/templates/partials/event-list.html',
                     controller: 'EventListController',
-                    controllerAs: 'events' // players could be seen as an instance of the controller, use it in the view!
+                    controllerAs: 'events'
                 }).
                 when('/events/new',{
                     templateUrl: 'assets/templates/partials/event-create.html',
@@ -47,38 +46,35 @@ angular
                 when('/events/:id', {
                     templateUrl: 'assets/templates/partials/event-detail.html',
                     controller: 'EventDetailController',
-                    controllerAs: 'event' // players could be seen as an instance of the controller, use it in the view!
+                    controllerAs: 'event'
                 }).
                 when('/events/:id/edit', {
                     templateUrl: 'assets/templates/partials/event-edit.html',
                     controller: 'EventEditController',
-                    controllerAs: 'event' // players could be seen as an instance of the controller, use it in the view!
+                    controllerAs: 'event'
                 }).
                 when('/tags', {
                     templateUrl: 'assets/templates/partials/tag-list.html',
                     controller: 'TagListController',
-                    controllerAs: 'tags' // tags could be seen as an instance of the controller, use it in the view!
+                    controllerAs: 'tags'
                 }).
                 otherwise({
                     redirectTo: '/'
                 });
 
-            $locationProvider.html5Mode(true); // This removes the hash-bang and use the Session history management >= IE10
+            $locationProvider.html5Mode(true);
         }])
     .config(function (localStorageServiceProvider) {
-        // The module give me some stuff to configure
         localStorageServiceProvider
-            .setPrefix('demo7app')
+            .setPrefix('RegistrationApp')
             .setStorageType('sessionStorage')
             .setNotify(true, true)
     })
-    .constant('API', { // here I also can declare constants
-        'key': "3256939b745006b070f30b945e26805a966e81398949a187ccfcb25f60ff7c0f", // bad practice!? Key on client....
-        'url': "http://localhost:3000/api/v1/", // base url
-        'format': 'application/json' // Default representation we want
+    .constant('API', {
+        'url': "http://localhost:3000/api/v1/",
+        'format': 'application/json'
     })
     .constant('LocalStorageConstants', {
-        'playersKey' : 'p', // just some keys for sessionStorage-keys
         'tagsKey'   : 't',
         'eventsKey'  : 'e'
     }).factory('authInterceptor', function($rootScope, $q, localStorageService, $location){

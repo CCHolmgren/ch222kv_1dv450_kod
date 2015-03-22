@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("TagListController", TagListController);
+    module("RegistrationApp").controller("TagListController", TagListController);
 
 TagListController.$inject = ['TagService'];
 

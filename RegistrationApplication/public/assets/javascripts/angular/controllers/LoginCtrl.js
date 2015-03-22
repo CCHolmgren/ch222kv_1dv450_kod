@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("LoginController", LoginController);
+    module("RegistrationApp").controller("LoginController", LoginController);
 
 LoginController.$inject = ['$rootScope', '$http','$location', 'localStorageService','$window', '$routeParams'];
 

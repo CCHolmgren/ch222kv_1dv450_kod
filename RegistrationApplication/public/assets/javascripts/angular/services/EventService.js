@@ -1,4 +1,4 @@
-angular.module("demo7App").factory("EventService", EventService);
+angular.module("RegistrationApp").factory("EventService", EventService);
 
 EventService.$inject = ['ResourceService', 'localStorageService', 'LocalStorageConstants', '$q'];
 console.log("This");

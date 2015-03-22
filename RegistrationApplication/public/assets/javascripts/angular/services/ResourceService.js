@@ -5,7 +5,7 @@
  Should have all the CRUD stuff
  */
 angular
-    .module("demo7App")
+    .module("RegistrationApp")
     .factory('ResourceService', ResourceService); // register the recipe for the service
 
 // We inject the http (for AJAX-handling) and the API

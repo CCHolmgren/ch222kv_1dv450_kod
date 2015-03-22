@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("EventDetailController", EventDetailController);
+    module("RegistrationApp").controller("EventDetailController", EventDetailController);
 
 EventDetailController.$inject = ['EventService', '$routeParams','localStorageService', '$location', '$scope'];
 

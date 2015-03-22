@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("EventListController", EventListController);
+    module("RegistrationApp").controller("EventListController", EventListController);
 
 EventListController.$inject = ['$scope','EventService','uiGmapGoogleMapApi'];
 

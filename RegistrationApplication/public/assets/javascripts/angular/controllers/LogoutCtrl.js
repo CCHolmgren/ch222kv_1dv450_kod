@@ -1,5 +1,5 @@
 angular.
-    module("demo7App").controller("LogoutController", LogoutController);
+    module("RegistrationApp").controller("LogoutController", LogoutController);
 
 LogoutController.$inject = ['$rootScope', '$location', 'localStorageService'];
 
