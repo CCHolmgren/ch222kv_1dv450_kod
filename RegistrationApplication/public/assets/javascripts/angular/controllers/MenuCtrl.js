@@ -9,14 +9,14 @@ function MenuController($rootScope, localStorage) {
     vm.username = localStorage.get('username');
     vm.user = localStorage.get('user');
 
-    $rootScope.$on('tokenchanged', function(event, parameters){
+    $rootScope.$on('tokenchanged', function (event, parameters) {
         vm.token = parameters.newvalue;
     });
-    $rootScope.$on('signedout', function(){
+    $rootScope.$on('signedout', function () {
         vm.username = null;
         vm.user = null;
     });
-    $rootScope.$on('signedin', function(){
+    $rootScope.$on('signedin', function () {
         vm.username = localStorage.get('username');
         vm.user = localStorage.get('user');
     });

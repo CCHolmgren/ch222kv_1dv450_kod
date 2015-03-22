@@ -1,17 +1,17 @@
 angular
-    .module('RegistrationApp', ['ngRoute', 'LocalStorageModule','uiGmapgoogle-maps'])
+    .module('RegistrationApp', ['ngRoute', 'LocalStorageModule', 'uiGmapgoogle-maps'])
     .config(['$routeProvider', '$locationProvider',
-        function($routeProvider, $locationProvider) {
+        function ($routeProvider, $locationProvider) {
             $routeProvider.
                 when('/', {
                     templateUrl: 'assets/templates/partials/index.html',
-                    redirectTo: function(current, path, search){
-                        if(search.goto){
+                    redirectTo: function (current, path, search) {
+                        if (search.goto) {
                             // if we were passed in a search param, and it has a path
                             // to redirect to, then redirect to that path
                             return "/" + search.goto
                         }
-                        else{
+                        else {
                             // else just redirect back to this location
                             // angular is smart enough to only do this once.
                             return "/"
@@ -33,12 +33,12 @@ angular
                     controller: 'EventListController',
                     controllerAs: 'events'
                 }).
-                when('/events/new',{
+                when('/events/new', {
                     templateUrl: 'assets/templates/partials/event-create.html',
                     controller: 'EventCreateController',
                     controllerAs: 'event'
                 }).
-                when('/events/search',{
+                when('/events/search', {
                     templateUrl: 'assets/templates/partials/search.html',
                     controller: 'EventSearchController',
                     controllerAs: 'event'
@@ -75,19 +75,19 @@ angular
         'format': 'application/json'
     })
     .constant('LocalStorageConstants', {
-        'tagsKey'   : 't',
-        'eventsKey'  : 'e'
-    }).factory('authInterceptor', function($rootScope, $q, localStorageService, $location){
+        'tagsKey': 't',
+        'eventsKey': 'e'
+    }).factory('authInterceptor', function ($rootScope, $q, localStorageService, $location) {
         return {
-            request: function(config){
+            request: function (config) {
                 config.headerse = config.headers || {};
-                if(localStorageService.get('token')){
-                    config.headers.Authorization = 'Bearer ' +localStorageService.get('token').value;
+                if (localStorageService.get('token')) {
+                    config.headers.Authorization = 'Bearer ' + localStorageService.get('token').value;
                 }
                 return config;
             },
-            response: function(response){
-                if(response.status == 401){
+            response: function (response) {
+                if (response.status == 401) {
                     toastr.warn("You must be signed in to do that. Please sign in before");
                     var path = $location.path();
                     $location.path('/login').search({next: path});
@@ -95,15 +95,15 @@ angular
                 return response || $q.when(response);
             }
         }
-    }).config(function($httpProvider){
+    }).config(function ($httpProvider) {
         $httpProvider.interceptors.push('authInterceptor');
-    }).directive('ngConfirmClick', [function(){
+    }).directive('ngConfirmClick', [function () {
         return {
             restrict: 'A',
-            link: function(scope, element,attrs){
-                element.bind('click', function(){
+            link: function (scope, element, attrs) {
+                element.bind('click', function () {
                     var message = attrs.ngConfirmMessage;
-                    if(message && confirm(message)){
+                    if (message && confirm(message)) {
                         scope.$apply(attrs.ngConfirmClick);
                     }
                 });

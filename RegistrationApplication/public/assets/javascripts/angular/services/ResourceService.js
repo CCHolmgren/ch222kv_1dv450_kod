@@ -6,11 +6,11 @@ ResourceService.$inject = ['$http', 'API'];
 
 function ResourceService($http, API) {
     return function (collectionName) {
-        var Resource = function(data) {
+        var Resource = function (data) {
             angular.extend(this, data);
         };
 
-        Resource.updateItem = function(item){
+        Resource.updateItem = function (item) {
             var req = {
                 method: 'PUT',
                 url: API.url + collectionName + '/' + item.id,
@@ -19,29 +19,29 @@ function ResourceService($http, API) {
                 },
                 data: item
             };
-            return $http(req).then(function(response){
+            return $http(req).then(function (response) {
                 return response;
             });
         };
 
-        Resource.getCollection = function() {
+        Resource.getCollection = function () {
             var req = {
                 method: 'GET',
                 url: API.url + collectionName,
                 headers: {
                     'Accept': API.format,
                     'X-APIKEY': API.key,
-                    'Authorization':API.key
+                    'Authorization': API.key
                 },
                 params: {
                     'limit': '100'
                 }
             };
-            return $http(req).then(function(response) {
+            return $http(req).then(function (response) {
 
                 var result = {};
 
-                angular.forEach(response.data, function(value, key) {
+                angular.forEach(response.data, function (value, key) {
 
                     result[key] = new Resource(value);
                 });
@@ -49,14 +49,14 @@ function ResourceService($http, API) {
             });
         };
 
-        Resource.getSingle = function(resourceInfo) {
+        Resource.getSingle = function (resourceInfo) {
 
             var url;
-            if(resourceInfo.hasOwnProperty('url')) {
+            if (resourceInfo.hasOwnProperty('url')) {
                 url = resourceInfo.url;
             }
-            else if(resourceInfo.hasOwnProperty('instanceName') && resourceInfo.hasOwnProperty('id')) {
-                url = API.url +resourceInfo.instanceName +"/" +resourceInfo.id
+            else if (resourceInfo.hasOwnProperty('instanceName') && resourceInfo.hasOwnProperty('id')) {
+                url = API.url + resourceInfo.instanceName + "/" + resourceInfo.id
             }
             else {
                 return false;
@@ -71,12 +71,12 @@ function ResourceService($http, API) {
                     'Authorization': "fae3ca98ef2d44cf89d8f49a5fa027d2"
                 }
             };
-            return $http(req).success(function(response) {
+            return $http(req).success(function (response) {
                 return response;
             });
         };
 
-        Resource.save = function(data) {
+        Resource.save = function (data) {
             var req = {
                 method: 'POST',
                 url: API.url + collectionName,
@@ -86,37 +86,37 @@ function ResourceService($http, API) {
                 },
                 data: data
             };
-            return $http(req).then(function(response){
+            return $http(req).then(function (response) {
                 return new Resource(response.data);
             });
         };
-        Resource.removeItem = function(id){
+        Resource.removeItem = function (id) {
             var req = {
                 method: 'DELETE',
                 url: API.url + collectionName + "/" + id,
                 headers: {
                     'Accept': API.format,
                     'X-APIKEY': API.key,
-                    'Authorization':API.key
+                    'Authorization': API.key
                 }
             };
-            return $http(req).then(function(response){
+            return $http(req).then(function (response) {
                 return new Resource(response.data);
             })
         };
 
-        Resource.search = function(query){
+        Resource.search = function (query) {
             var req = {
                 method: 'GET',
                 url: API.url + collectionName + '/search',
                 headers: {
-                    'Accept':API.format
+                    'Accept': API.format
                 },
                 params: {
                     'q': query
                 }
             };
-            return $http(req).then(function(response){
+            return $http(req).then(function (response) {
                 return new Resource(response.data);
             });
         };

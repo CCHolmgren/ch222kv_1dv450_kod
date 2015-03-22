@@ -5,7 +5,7 @@
  * @author grevory <greg@gregpike.ca>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
-(function ( window, angular, undefined ) {
+(function (window, angular, undefined) {
     /*jshint globalstrict:true*/
     'use strict';
 
@@ -22,12 +22,12 @@
 // Test if string is only contains numbers
 // e.g '1' => true, "'1'" => true
     function isStringNumber(num) {
-        return  /^-?\d+\.?\d*$/.test(num.replace(/["']/g, ''));
+        return /^-?\d+\.?\d*$/.test(num.replace(/["']/g, ''));
     }
 
     var angularLocalStorage = angular.module('LocalStorageModule', []);
 
-    angularLocalStorage.provider('localStorageService', function() {
+    angularLocalStorage.provider('localStorageService', function () {
 
         // You should set a prefix to avoid overwriting any local storage variables from the rest of your app
         // e.g. localStorageServiceProvider.setPrefix('youAppName');
@@ -55,19 +55,19 @@
         };
 
         // Setter for the prefix
-        this.setPrefix = function(prefix) {
+        this.setPrefix = function (prefix) {
             this.prefix = prefix;
             return this;
         };
 
         // Setter for the storageType
-        this.setStorageType = function(storageType) {
+        this.setStorageType = function (storageType) {
             this.storageType = storageType;
             return this;
         };
 
         // Setter for cookie config
-        this.setStorageCookie = function(exp, path) {
+        this.setStorageCookie = function (exp, path) {
             this.cookie = {
                 expiry: exp,
                 path: path
@@ -76,14 +76,14 @@
         };
 
         // Setter for cookie domain
-        this.setStorageCookieDomain = function(domain) {
+        this.setStorageCookieDomain = function (domain) {
             this.cookie.domain = domain;
             return this;
         };
 
         // Setter for notification config
         // itemSet & itemRemove should be booleans
-        this.setNotify = function(itemSet, itemRemove) {
+        this.setNotify = function (itemSet, itemRemove) {
             this.notify = {
                 setItem: itemSet,
                 removeItem: itemRemove
@@ -91,7 +91,7 @@
             return this;
         };
 
-        this.$get = ['$rootScope', '$window', '$document', '$parse', function($rootScope, $window, $document, $parse) {
+        this.$get = ['$rootScope', '$window', '$document', '$parse', function ($rootScope, $window, $document, $parse) {
             var self = this;
             var prefix = self.prefix;
             var cookie = self.cookie;
@@ -110,7 +110,7 @@
             if (prefix.substr(-1) !== '.') {
                 prefix = !!prefix ? prefix + '.' : '';
             }
-            var deriveQualifiedKey = function(key) {
+            var deriveQualifiedKey = function (key) {
                 return prefix + key;
             };
             // Checks the browser to see if local storage is supported
@@ -139,7 +139,6 @@
             }());
 
 
-
             // Directly adds a value to local storage
             // If local storage is not available in the browser use cookies
             // Example use: localStorageService.add('library','angular');
@@ -158,7 +157,11 @@
                     }
 
                     if (notify.setItem) {
-                        $rootScope.$broadcast('LocalStorageModule.notification.setitem', {key: key, newvalue: value, storageType: 'cookie'});
+                        $rootScope.$broadcast('LocalStorageModule.notification.setitem', {
+                            key: key,
+                            newvalue: value,
+                            storageType: 'cookie'
+                        });
                     }
                     return addToCookies(key, value);
                 }
@@ -167,9 +170,16 @@
                     if (isObject(value) || isArray(value)) {
                         value = toJson(value);
                     }
-                    if (webStorage) {webStorage.setItem(deriveQualifiedKey(key), value)};
+                    if (webStorage) {
+                        webStorage.setItem(deriveQualifiedKey(key), value)
+                    }
+                    ;
                     if (notify.setItem) {
-                        $rootScope.$broadcast('LocalStorageModule.notification.setitem', {key: key, newvalue: value, storageType: self.storageType});
+                        $rootScope.$broadcast('LocalStorageModule.notification.setitem', {
+                            key: key,
+                            newvalue: value,
+                            storageType: self.storageType
+                        });
                     }
                 } catch (e) {
                     $rootScope.$broadcast('LocalStorageModule.notification.error', e.message);
@@ -184,7 +194,7 @@
 
                 if (!browserSupportsLocalStorage || self.storageType === 'cookie') {
                     if (!browserSupportsLocalStorage) {
-                        $rootScope.$broadcast('LocalStorageModule.notification.warning','LOCAL_STORAGE_NOT_SUPPORTED');
+                        $rootScope.$broadcast('LocalStorageModule.notification.warning', 'LOCAL_STORAGE_NOT_SUPPORTED');
                     }
 
                     return getFromCookies(key);
@@ -213,7 +223,10 @@
                     }
 
                     if (notify.removeItem) {
-                        $rootScope.$broadcast('LocalStorageModule.notification.removeitem', {key: key, storageType: 'cookie'});
+                        $rootScope.$broadcast('LocalStorageModule.notification.removeitem', {
+                            key: key,
+                            storageType: 'cookie'
+                        });
                     }
                     return removeFromCookies(key);
                 }
@@ -221,7 +234,10 @@
                 try {
                     webStorage.removeItem(deriveQualifiedKey(key));
                     if (notify.removeItem) {
-                        $rootScope.$broadcast('LocalStorageModule.notification.removeitem', {key: key, storageType: self.storageType});
+                        $rootScope.$broadcast('LocalStorageModule.notification.removeitem', {
+                            key: key,
+                            storageType: self.storageType
+                        });
                     }
                 } catch (e) {
                     $rootScope.$broadcast('LocalStorageModule.notification.error', e.message);
@@ -243,7 +259,7 @@
                 var keys = [];
                 for (var key in webStorage) {
                     // Only return keys that are for this app
-                    if (key.substr(0,prefixLength) === prefix) {
+                    if (key.substr(0, prefixLength) === prefix) {
                         try {
                             keys.push(key.substr(prefixLength));
                         } catch (e) {
@@ -282,7 +298,7 @@
                         try {
                             removeFromLocalStorage(key.substr(prefixLength));
                         } catch (e) {
-                            $rootScope.$broadcast('LocalStorageModule.notification.error',e.message);
+                            $rootScope.$broadcast('LocalStorageModule.notification.error', e.message);
                             return clearAllFromCookies();
                         }
                     }
@@ -291,7 +307,7 @@
             };
 
             // Checks the browser to see if cookies are supported
-            var browserSupportsCookies = (function() {
+            var browserSupportsCookies = (function () {
                 try {
                     return $window.navigator.cookieEnabled ||
                         ("cookie" in $document && ($document.cookie.length > 0 ||
@@ -309,7 +325,7 @@
 
                 if (isUndefined(value)) {
                     return false;
-                } else if(isArray(value) || isObject(value)) {
+                } else if (isArray(value) || isObject(value)) {
                     value = toJson(value);
                 }
 
@@ -334,13 +350,13 @@
                     }
                     if (!!key) {
                         var cookiePath = "; path=" + cookie.path;
-                        if(cookie.domain){
+                        if (cookie.domain) {
                             cookieDomain = "; domain=" + cookie.domain;
                         }
                         $document.cookie = deriveQualifiedKey(key) + "=" + encodeURIComponent(value) + expiry + cookiePath + cookieDomain;
                     }
                 } catch (e) {
-                    $rootScope.$broadcast('LocalStorageModule.notification.error',e.message);
+                    $rootScope.$broadcast('LocalStorageModule.notification.error', e.message);
                     return false;
                 }
                 return true;
@@ -355,17 +371,17 @@
                 }
 
                 var cookies = $document.cookie && $document.cookie.split(';') || [];
-                for(var i=0; i < cookies.length; i++) {
+                for (var i = 0; i < cookies.length; i++) {
                     var thisCookie = cookies[i];
                     while (thisCookie.charAt(0) === ' ') {
-                        thisCookie = thisCookie.substring(1,thisCookie.length);
+                        thisCookie = thisCookie.substring(1, thisCookie.length);
                     }
                     if (thisCookie.indexOf(deriveQualifiedKey(key) + '=') === 0) {
                         var storedValues = decodeURIComponent(thisCookie.substring(prefix.length + key.length + 1, thisCookie.length))
-                        try{
+                        try {
                             var obj = JSON.parse(storedValues);
                             return fromJson(obj)
-                        }catch(e){
+                        } catch (e) {
                             return storedValues
                         }
                     }
@@ -374,14 +390,14 @@
             };
 
             var removeFromCookies = function (key) {
-                addToCookies(key,null);
+                addToCookies(key, null);
             };
 
             var clearAllFromCookies = function () {
                 var thisCookie = null, thisKey = null;
                 var prefixLength = prefix.length;
                 var cookies = $document.cookie.split(';');
-                for(var i = 0; i < cookies.length; i++) {
+                for (var i = 0; i < cookies.length; i++) {
                     thisCookie = cookies[i];
 
                     while (thisCookie.charAt(0) === ' ') {
@@ -393,13 +409,13 @@
                 }
             };
 
-            var getStorageType = function() {
+            var getStorageType = function () {
                 return storageType;
             };
 
             // Add a listener on scope variable to save its changes to local storage
             // Return a function which when called cancels binding
-            var bindToScope = function(scope, key, def, lsKey) {
+            var bindToScope = function (scope, key, def, lsKey) {
                 lsKey = lsKey || key;
                 var value = getFromLocalStorage(lsKey);
 
@@ -411,18 +427,18 @@
 
                 $parse(key).assign(scope, value);
 
-                return scope.$watch(key, function(newVal) {
+                return scope.$watch(key, function (newVal) {
                     addToLocalStorage(lsKey, newVal);
                 }, isObject(scope[key]));
             };
 
             // Return localStorageService.length
             // ignore keys that not owned
-            var lengthOfLocalStorage = function() {
+            var lengthOfLocalStorage = function () {
                 var count = 0;
                 var storage = $window[storageType];
-                for(var i = 0; i < storage.length; i++) {
-                    if(storage.key(i).indexOf(prefix) === 0 ) {
+                for (var i = 0; i < storage.length; i++) {
+                    if (storage.key(i).indexOf(prefix) === 0) {
                         count++;
                     }
                 }
@@ -452,4 +468,4 @@
             };
         }];
     });
-})( window, window.angular );
+})(window, window.angular);

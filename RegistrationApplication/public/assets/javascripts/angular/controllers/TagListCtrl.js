@@ -6,8 +6,10 @@ TagListController.$inject = ['TagService'];
 function TagListController(tagService) {
     var vm = this;
 
-    tagService.get().then(function(data){
+    tagService.get().then(function (data) {
         //Convert the object data.tags to an array, since it is needed by angular to do filtering
-        vm.tagsList = Object.keys(data.tags).map(function(key){return data.tags[key]});
+        vm.tagsList = Object.keys(data.tags).map(function (key) {
+            return data.tags[key]
+        });
     });
 }
