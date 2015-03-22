@@ -10,7 +10,7 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
     $scope.options = {scrollwheel: true};
 
     eventService.get().then(function(data){
-        vm.eventsList = Object.keys(data.events).map(function(key){console.log(key);return data.events[key]});
+        vm.eventsList = Object.keys(data.events).map(function(key){return data.events[key]});
         vm.eventsListCopy = angular.copy(vm.eventsList);
         //Get all tags, and unnest the array
         vm.tags = vm.eventsList.map(function(event){
@@ -102,7 +102,6 @@ function EventListController($scope, eventService, uiGmapGoogleMapApi) {
         eventService.clearEvents();
         toastr.clear();
         toastr.success("Cache cleared");
-        console.log("Events cleared");
     };
     uiGmapGoogleMapApi.then(function(maps){
     });

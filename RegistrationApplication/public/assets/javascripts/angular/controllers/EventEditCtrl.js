@@ -13,7 +13,6 @@ function EventEditController(eventService, $routeParams, localStorage, $location
         vm.event = data.data;
         vm.event.latitude = parseFloat(vm.event.latitude);
         vm.event.longitude = parseFloat(vm.event.longitude);
-        console.log("event.tags", vm.event.tags);
         vm.event.tags = vm.event.tags || [{name:""},{name:""},{name:""}];
         if(!vm.event.tags){
             vm.event.tag = {name:""};
@@ -27,7 +26,6 @@ function EventEditController(eventService, $routeParams, localStorage, $location
         }
     };
     vm.addTag = function(tag){
-        console.log(tag);
         tag = angular.copy(tag);
         tags = tag.name.split(' ').map(function(name){
             return {name:name};
@@ -44,9 +42,7 @@ function EventEditController(eventService, $routeParams, localStorage, $location
         event.tags = event.tags || [event.tag];
         eventService.update(event).then(function(data){
             toastr.info("Updated the event");
-            console.log('event/'+data.data.event.id);
             $location.path('/events/'+data.data.event.id);
-            console.log(data);
         });
     };
     uiGmapGoogleMapApi.then(function(maps){

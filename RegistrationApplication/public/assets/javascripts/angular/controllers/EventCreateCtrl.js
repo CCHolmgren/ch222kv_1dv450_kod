@@ -13,7 +13,6 @@ function EventCreateController(eventService, $routeParams, localStorage, $locati
         eventService.create(event).then(function(data){
             toastr.info("Created the event");
             $location.path('events/' + data.data.event.id);
-            console.log(data);
         }, function(){
             toastr.error("Something went wrong with the creation of the event. Please try again.", 'Error');
         });

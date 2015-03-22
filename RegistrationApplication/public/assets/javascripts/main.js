@@ -82,7 +82,6 @@ angular
             request: function(config){
                 config.headerse = config.headers || {};
                 if(localStorageService.get('token')){
-                    console.log("token in authinterceptor", localStorageService.get('token'));
                     config.headers.Authorization = 'Bearer ' +localStorageService.get('token').value;
                 }
                 return config;

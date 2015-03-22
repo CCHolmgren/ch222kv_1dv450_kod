@@ -10,7 +10,6 @@ function MenuController($rootScope, localStorage) {
     vm.user = localStorage.get('user');
 
     $rootScope.$on('tokenchanged', function(event, parameters){
-        console.log(event, parameters);
         vm.token = parameters.newvalue;
     });
     $rootScope.$on('signedout', function(){

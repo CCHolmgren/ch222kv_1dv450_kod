@@ -11,8 +11,7 @@ function EventSearchController(eventService, localStorage, $scope) {
         toastr.info("Query: " + searchString);
         eventService.search(searchString).then(function(data){
             vm.results = data.events;
-        },function(){
-            console.log(arguments);
+        },function(){;
             toastr.error("The search could not finish, please try again, if you want.", "Error");
         });
     };
