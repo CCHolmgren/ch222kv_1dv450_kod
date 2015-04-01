@@ -1,6 +1,6 @@
 class EventsController < ApiController
   include ApiHelper
-  before_action :authenticate, only: [:create, :update, :destroy]
+  before_action :authenticate
   before_action :set_event, only: [:show, :update, :destroy]
   before_action :offset_params, only: [:index, :proximity, :search]
   respond_to :json

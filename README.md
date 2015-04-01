@@ -12,3 +12,10 @@ Instructions on how to install and get PostgreSQL running.
 It can be good to learn how to read a manual.
 
 Then read the message on the release for up to date instructions on how to get the application running.
+
+Sign in with
+1. Username: admin, password: password
+2. Username: ordinary_user, password: password
+3. Username: otheruser, password: password
+
+Only admin is an administrator and can edit any event.

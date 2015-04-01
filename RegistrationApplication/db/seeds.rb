@@ -8,8 +8,8 @@
 
 # Admin
 User.create(username: "admin", password: "password", password_confirmation: "password", is_administrator: true, email: "@")
-User.create(username: "ordinary_user", password:"password", password_confirmation:"password", is_administrator: false, email:"@")
-otheruser = User.create(username: "otheruser", password:"password", password_confirmation:"password", is_administrator:false, email:"@")
+User.create(username: "ordinary_user", password:"password", password_confirmation:"password", is_administrator: false, email:"a@b.c")
+otheruser = User.create(username: "otheruser", password:"password", password_confirmation:"password", is_administrator:false, email:"c@d.e")
 
 # Create some tags
 ["great", "decent", "awful", "been-there-done-that", "what-now"].each do |name|

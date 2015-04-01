@@ -120,6 +120,18 @@ function ResourceService($http, API) {
                 return new Resource(response.data);
             });
         };
+        Resource.getEventsByTag = function(tagid){
+            var req = {
+                method: 'GET',
+                url: API.url + collectionName + '/' + tagid + '/events/',
+                headers: {
+                    'Accept': API.format
+                }
+            };
+            return $http(req).then(function(response){
+                return new Resource(response.data);
+            });
+        };
 
         return Resource;
     }

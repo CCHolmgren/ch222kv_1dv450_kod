@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
         @token = Token.create(user: user, expiry: 15.hours.from_now)
         render json: { token: @token, user: user} and return
       end
-      render json: {message: "That combination did not seem to work."}, status: :bad_request and return
+      render json: {message: "The username or password was incorrect.", code: 401}, status: :unauthorized and return
     end
   end
 

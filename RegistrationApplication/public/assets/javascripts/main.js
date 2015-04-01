@@ -53,6 +53,11 @@ angular
                     controller: 'EventEditController',
                     controllerAs: 'event'
                 }).
+                when('/tags/:id', {
+                    templateUrl: 'assets/templates/partials/tag-event-list.html',
+                    controller: 'TagEventListController',
+                    controllerAs: 'tags'
+                }).
                 when('/tags', {
                     templateUrl: 'assets/templates/partials/tag-list.html',
                     controller: 'TagListController',

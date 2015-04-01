@@ -11,6 +11,15 @@ function TagService(resourceService, localStorage, LS, $q) {
                 deferred.resolve(data);
             });
             return deferred.promise;
+        },
+        getEventsByTag: function(tag){
+            var deferred = $q.defer();
+            Tag.getEventsByTag(tag).then(function(data){
+                deferred.resolve(data);
+            }, function(error){
+                deferred.reject(error);
+            });
+            return deferred.promise;
         }
     }
 }

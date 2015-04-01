@@ -5,9 +5,9 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" data-ng-href=".">Home</a>
-            <a class="navbar-brand" data-ng-href="events">All events</a>
-            <a class="navbar-brand" data-ng-href="tags">Tags</a>
-            <a class="navbar-brand" ng-href="events/search">Search events</a>
+            <a class="navbar-brand" data-ng-href="events" ng-if="menu.token">All events</a>
+            <a class="navbar-brand" data-ng-href="tags" ng-if="menu.token">Tags</a>
+            <a class="navbar-brand" ng-href="events/search" ng-if="menu.token">Search events</a>
             <a class="navbar-brand" ng-href="login" ng-if="!menu.token">Login</a>
             <a class="navbar-brand" ng-href="logout" ng-if="menu.token">Logout</a>
             <a class="navbar-brand" style="float:right" ng-if="menu.token">Signed in as {{menu.username}}</a>

@@ -7,13 +7,14 @@ function LoginController($rootScope, $http, $location, localStorage, $window, $r
     var vm = this;
     vm.user = {};
     vm.login = function () {
-        $http.post('/login', {'username': vm.user.username, 'password': vm.user.password}).success(function (data) {
-            localStorage.set('token', JSON.stringify(data.token));
-            $rootScope.$broadcast('tokenchanged', {key: 'token', newvalue: data.token});
-            $rootScope.$broadcast('signedin');
+        $http.post('/login', {'username': vm.user.username, 'password': vm.user.password}).then(function (data) {
+            console.log(data);
+            localStorage.set('token', JSON.stringify(data.data.token));
+            localStorage.set('username', data.data.user.username);
+            localStorage.set('user', JSON.stringify(data.data.user));
 
-            localStorage.set('username', data.user.username);
-            localStorage.set('user', JSON.stringify(data.user));
+            $rootScope.$broadcast('tokenchanged', {key: 'token', newvalue: data.data.token});
+            $rootScope.$broadcast('signedin');
 
             toastr.success("Logged in!");
 
@@ -22,6 +23,9 @@ function LoginController($rootScope, $http, $location, localStorage, $window, $r
             } else {
                 $location.path('/');
             }
+        }, function(result){
+            console.log(result);
+            toastr.error(result.data.message, 'Login error');
         });
 
     }
