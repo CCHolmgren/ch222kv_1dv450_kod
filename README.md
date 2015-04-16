@@ -18,4 +18,4 @@ Sign in with
 2. Username: ordinary_user, password: password
 3. Username: otheruser, password: password
 
-Only admin is an administrator and can edit any event.
+Only admin is an administrator and can edit any event. The other users can only edit their own events.
