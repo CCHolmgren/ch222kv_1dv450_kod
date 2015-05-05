@@ -1,8 +1,9 @@
 <div class="container">
     <h3>Events</h3>
-
     <div class="col-md-6">
-        <a ng-click="events.all()">All</a> | <a ng-click="events.clearCache()">Clear cache</a>
+        <a href="events/new">Create new event</a> |
+        <a ng-click="events.all()">All</a> |
+        <a ng-click="events.clearCache()">Clear cache</a>
         <hr>
         Filter: <input ng-model="search.$" type="text" class="form-control">
         <table class="table table-striped table-bordered">
