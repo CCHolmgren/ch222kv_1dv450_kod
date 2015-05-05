@@ -1,16 +1,49 @@
 <div>
-    <h3>Edit event</h3>
-    <p>
-        Name: {{ event.event.name }}
-    </p>
-    {{event}}
+    <h3>Create event</h3>
     <form ng-submit="event.save()">
-        <input type="text" ng-model="event.event.name">
-        <input type="text" ng-model="event.event.short_description">
-        <input type="text" ng-model="event.event.description">
-        <input type="text" ng-model="event.event.latitude">
-        <input type="text" ng-model="event.event.longitude">
-        <input type="text" ng-model="event.event.tags">
-        <input type="submit" text="Save">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" ng-model="event.event.name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="short_description">Short description</label>
+            <input type="text" id="short_description" ng-model="event.event.short_description" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" ng-model="event.event.description" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="number" id="longitude" ng-model="event.event.longitude" class="form-control" step="any"/>
+        </div>
+        <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="number" id="latitude" ng-model="event.event.latitude" class="form-control" step="any"/>
+        </div>
+        <div class="form-group">
+            <label for="tags">Tags</label>
+            <small>Tags will be split on spaces, and they must be longer than 3 characters long.</small>
+            <input type="text" id="tags" ng-model="tag.name" class="form-control">
+            <a ng-click="event.addTag(tag)" class="btn btn-default">Add tag</a>
+        </div>
+        <div>
+            <h4>Current tags</h4>
+            <div ng-repeat="t in event.event.tags" class="tag">
+                <span>{{t.name}} <button type="button" class="close" ng-click="event.removeTag(t)">&times;</button></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" text="Save" class="btn btn-primary">
+        </div>
     </form>
+    <style>
+        .angular-google-map-container {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <ui-gmap-google-map center="{latitude:event.event.latitude, longitude:event.event.longitude}" zoom="map.zoom" options="options">
+        <ui-gmap-marker coords="{latitude:event.event.latitude, longitude:event.event.longitude}" idKey="1" ng-if="event.event.latitude && event.event.longitude"></ui-gmap-marker>
+    </ui-gmap-google-map>
 </div>
